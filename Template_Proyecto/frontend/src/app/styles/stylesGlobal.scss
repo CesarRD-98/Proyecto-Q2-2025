@@ -39,7 +39,7 @@ body {
   }
 
   &:focus {
-    background: darken($primary, 10%);
+    background: $primary;
   }
 }
 
