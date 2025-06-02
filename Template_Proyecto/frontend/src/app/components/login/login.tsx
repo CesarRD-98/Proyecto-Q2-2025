@@ -1,15 +1,19 @@
 'use client'
 import React, { useState } from 'react'
 import styles from "./loginForm.module.scss";
+import { useRouter } from 'next/navigation';
 
 export default function Login() {
+
+    const router = useRouter()
 
     const [usuario, setUsuario] = useState<string>("")
     const [contrasena, setContrasena] = useState<string>("")
     const [message, setMessage] = useState<string>("")
 
 
-    function verifyLogin() {
+    function verifyLogin(event: React.FormEvent) {
+        event.preventDefault()
 
         if (usuario === "" && contrasena === "") {
             setMessage("Por favor, ingrese su usuario y contraseña.")
@@ -17,8 +21,8 @@ export default function Login() {
         }
 
         setMessage("")
-
-        alert('Ups error 404 - Estamos en mantenimiento...')
+        router.push('/inicio')
+        // alert('Ups error 404 - Estamos en mantenimiento...')
     }
 
 
@@ -49,7 +53,7 @@ export default function Login() {
                         </div>
                         {message !== "" && <p>{message}</p>}
                         <div>
-                            <button type='submit' className='btn btn-primary' onClick={verifyLogin}>Ingresar</button>
+                            <button type='submit' className='btn btn-primary' onClick={(e)=> verifyLogin(e)}>Ingresar</button>
                         </div>
                     </div>
                 </form>
