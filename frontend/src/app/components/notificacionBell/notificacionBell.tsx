@@ -7,10 +7,10 @@ import styles from "./notificacion.module.scss";
 export default function NotificationBell() {
     const [showMenu, setShowMenu] = useState(false);
     const [notifications, setNotifications] = useState([
-        "Nuevo mensaje de Juan",
-        "Actualización del sistema",
-        "Recordatorio de reunión a las 3 PM",
-        "Nuevo comentario en tu ticket",
+        'Nuevo ticket creado',
+        'Ticket 1001 actualizado',
+        'Ticket 1002 cerrado',
+        'Nueva respuesta en el ticket 1003',
     ]);
 
     const menuRef = useRef<HTMLDivElement>(null);

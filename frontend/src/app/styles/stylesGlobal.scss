@@ -13,7 +13,6 @@ body {
 }
 
 .btn {
-  width: 100%;
   background-color: #dfdfdf;
   border: none;
   padding: $padding-input;
@@ -25,7 +24,7 @@ body {
     background-color: #d4d4d4;
   }
 
-  &:focus {
+  &:active {
     background-color: #ccc;
   }
 }
@@ -38,9 +37,26 @@ body {
     background: $secondary;
   }
 
-  &:focus {
+  &:active {
     background: $primary;
   }
+}
+
+.btn-secondary {
+  background-color: $secondary;
+  color: #fff;
+
+  &:hover {
+    background: $primary;
+  }
+
+  &:active {
+    background: $secondary;
+  }
+}
+
+.w-100 {
+  width: 100%;
 }
 
 .form-control {

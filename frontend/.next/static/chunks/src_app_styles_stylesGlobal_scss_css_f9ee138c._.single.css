@@ -16,7 +16,6 @@ body {
   background-color: #dfdfdf;
   border: none;
   border-radius: 6px;
-  width: 100%;
   padding: .75rem;
   transition: all .2s ease-in-out;
 }
@@ -25,7 +24,7 @@ body {
   background-color: #d4d4d4;
 }
 
-.btn:focus {
+.btn:active {
   background-color: #ccc;
 }
 
@@ -38,8 +37,25 @@ body {
   background: #104e64;
 }
 
-.btn-primary:focus {
+.btn-primary:active {
   background: #0092b8;
+}
+
+.btn-secondary {
+  color: #fff;
+  background-color: #104e64;
+}
+
+.btn-secondary:hover {
+  background: #0092b8;
+}
+
+.btn-secondary:active {
+  background: #104e64;
+}
+
+.w-100 {
+  width: 100%;
 }
 
 .form-control {

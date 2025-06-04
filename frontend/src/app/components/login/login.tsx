@@ -53,7 +53,7 @@ export default function Login() {
                         </div>
                         {message !== "" && <p>{message}</p>}
                         <div>
-                            <button type='submit' className='btn btn-primary' onClick={(e)=> verifyLogin(e)}>Ingresar</button>
+                            <button type='submit' className='btn btn-primary w-100' onClick={(e)=> verifyLogin(e)}>Ingresar</button>
                         </div>
                     </div>
                 </form>

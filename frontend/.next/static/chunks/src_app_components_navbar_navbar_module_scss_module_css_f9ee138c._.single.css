@@ -22,6 +22,11 @@
   color: #fff;
   font-weight: 500;
   text-decoration: none;
+  transition: color .2s ease-in-out;
+}
+
+.navbar-module-scss-module__Qq7sHq__navbar a:hover {
+  color: #000;
 }
 
 /*# sourceMappingURL=src_app_components_navbar_navbar_module_scss_module_css_f9ee138c._.single.css.map*/
