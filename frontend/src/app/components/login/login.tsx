@@ -15,7 +15,7 @@ export default function Login() {
     function verifyLogin(event: React.FormEvent) {
         event.preventDefault()
 
-        if (usuario === "" && contrasena === "") {
+        if (usuario === "" || contrasena === "") {
             setMessage("Por favor, ingrese su usuario y contraseña.")
             return
         }
