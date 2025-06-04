@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Cesar%20Reyes/Desktop/Proyecto_DAW2/Proyecto-Q2-2025/Template_Proyecto/frontend/src/app/components/navbar/navbar.module.scss.module.css"],"sourcesContent":[".navbar{display:flex;justify-content:space-between;padding:14px 20px;background-color:#dfdfdf}.navbar ul{display:flex;align-items:center;gap:2.5rem}.navbar li{list-style:none;cursor:pointer}.navbar a{color:#000;font-weight:500;text-decoration:none}"],"names":[],"mappings":"AAAA;;;;;;;AAA8F;;;;;;AAAsD;;;;;AAA0C","debugId":null}}]
+}

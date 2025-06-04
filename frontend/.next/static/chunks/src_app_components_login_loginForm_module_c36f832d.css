@@ -1,0 +1,33 @@
+/* [project]/src/app/components/login/loginForm.module.css [app-client] (css) */
+.loginForm-module__oZ5SXq__container {
+  background: #f0f0f0;
+  border-radius: 1rem;
+  flex-direction: column;
+  max-width: 400px;
+  margin: auto;
+  padding: 2rem;
+  display: flex;
+}
+
+.loginForm-module__oZ5SXq__container input {
+  border: 1px solid #ccc;
+  border-radius: .5rem;
+  margin-bottom: 1rem;
+  padding: .75rem;
+}
+
+.loginForm-module__oZ5SXq__container button {
+  color: #fff;
+  cursor: pointer;
+  background: #198754;
+  border: none;
+  border-radius: .5rem;
+  padding: .75rem;
+}
+
+.loginForm-module__oZ5SXq__container button:hover {
+  background: #157347;
+}
+
+
+/*# sourceMappingURL=src_app_components_login_loginForm_module_c36f832d.css.map*/

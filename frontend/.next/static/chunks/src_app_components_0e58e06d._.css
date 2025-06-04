@@ -1,0 +1,85 @@
+/* [project]/src/app/components/navbar/navbar.module.scss.module.css [app-client] (css) */
+.navbar-module-scss-module__Qq7sHq__navbar {
+  color: #fff;
+  background-color: #0092b8;
+  justify-content: space-between;
+  padding: 14px 20px;
+  display: flex;
+}
+
+.navbar-module-scss-module__Qq7sHq__navbar ul {
+  align-items: center;
+  gap: 0 2.5rem;
+  display: flex;
+}
+
+.navbar-module-scss-module__Qq7sHq__navbar li {
+  cursor: pointer;
+  list-style: none;
+}
+
+.navbar-module-scss-module__Qq7sHq__navbar a {
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+
+/* [project]/src/app/components/notificacionBell/notificacion.module.scss.module.css [app-client] (css) */
+.notificacion-module-scss-module__O2NOFq__container {
+  display: flex;
+}
+
+.notificacion-module-scss-module__O2NOFq__iconContainer {
+  position: relative;
+}
+
+.notificacion-module-scss-module__O2NOFq__badge {
+  color: #fff;
+  text-align: center;
+  background: red;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  font-size: 12px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.notificacion-module-scss-module__O2NOFq__menu {
+  color: #000;
+  background: #fff;
+  border-radius: 5px;
+  padding: 1.2rem;
+  position: absolute;
+  top: 60px;
+  right: 120px;
+  box-shadow: 0 4px 6px #0000001a;
+}
+
+.notificacion-module-scss-module__O2NOFq__menu h4 {
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 8px;
+  padding-bottom: .5rem;
+}
+
+.notificacion-module-scss-module__O2NOFq__ul {
+  flex-direction: column;
+  display: flex;
+  gap: .5rem !important;
+}
+
+.notificacion-module-scss-module__O2NOFq__ul li {
+  color: #000;
+  text-align: left;
+  background-color: #f0f9ff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+}
+
+
+/*# sourceMappingURL=src_app_components_0e58e06d._.css.map*/

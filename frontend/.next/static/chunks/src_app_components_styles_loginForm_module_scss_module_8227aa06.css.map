@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Cesar%20Reyes/Desktop/GitHub/desarrollo-web-2-2025/Template_Proyecto/frontend/src/app/components/styles/loginForm.module.scss.module.css"],"sourcesContent":[".container{display:flex;flex-direction:column;max-width:400px;margin:auto;padding:2rem;background:#f0f0f0;border-radius:1rem}.container .input{margin-bottom:1rem;padding:.75rem;border:1px solid #ccc;border-radius:.5rem}.container .button{background:#198754;color:#fff;border:none;padding:.75rem;border-radius:.5rem;cursor:pointer}.container .button:hover{background:#157347}"],"names":[],"mappings":"AAAA;;;;;;;;;;AAA6H;;;;;;;AAA8F;;;;;;;;;AAA+G","debugId":null}}]
+}

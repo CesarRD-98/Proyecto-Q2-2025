@@ -1,0 +1,37 @@
+/* [project]/src/app/components/notificacionBell/notificacion.module.scss.module.css [app-client] (css) */
+.notificacion-module-scss-module__O2NOFq__container {
+  display: inline-block;
+  position: relative;
+}
+
+.notificacion-module-scss-module__O2NOFq__iconContainer {
+  cursor: pointer;
+  position: relative;
+}
+
+.notificacion-module-scss-module__O2NOFq__badge {
+  color: #fff;
+  text-align: center;
+  background: red;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.notificacion-module-scss-module__O2NOFq__menu {
+  background: #fff;
+  border-radius: 5px;
+  width: 200px;
+  padding: 10px;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  box-shadow: 0 4px 6px #0000001a;
+}
+
+
+/*# sourceMappingURL=src_app_components_notificacionBell_notificacion_module_scss_module_87cc9084.css.map*/
