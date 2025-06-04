@@ -18,7 +18,8 @@ export default function Navbar() {
                 <h3>Geticket - Gestión de Tickets</h3>
             </div>
             <ul>
-                <li><a href="/inicio">Tickets</a></li>
+                <li><a href="/inicio">Inicio</a></li>
+                <li><a href="/tickets">Tickets</a></li>
                 <li><a href="/reportes">Reportes</a></li>
                 <li><NotificationBell /></li>
                 <li><UserIcon /></li>
