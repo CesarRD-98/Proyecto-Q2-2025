@@ -31,7 +31,7 @@ export default function NotificationBell() {
             document.removeEventListener("mousedown", handleClickOutside);
         }
 
-        // return () => document.removeEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [showMenu]);
 
     return (
