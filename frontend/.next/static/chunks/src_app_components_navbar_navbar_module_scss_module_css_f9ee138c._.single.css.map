@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/src/app/components/navbar/navbar.module.scss.module.css"],"sourcesContent":[".navbar{display:flex;justify-content:space-between;padding:14px 20px;background-color:#0092b8;color:#fff}.navbar ul{display:flex;align-items:center;gap:0 2.5rem}.navbar li{list-style:none;cursor:pointer}.navbar a{color:#fff;font-weight:500;text-decoration:none}"],"names":[],"mappings":"AAAA;;;;;;;;AAAyG;;;;;;AAAwD;;;;;AAA0C"}}]
+}

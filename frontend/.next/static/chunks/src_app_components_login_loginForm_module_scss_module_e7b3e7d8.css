@@ -1,0 +1,35 @@
+/* [project]/src/app/components/login/loginForm.module.scss.module.css [app-client] (css) */
+.loginForm-module-scss-module__j9nDEG__containerLogin {
+  background: #f0f0f0;
+  border-radius: 6px;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 4% auto;
+  display: flex;
+}
+
+.loginForm-module-scss-module__j9nDEG__containerLogin .loginForm-module-scss-module__j9nDEG__container {
+  padding: 2rem;
+}
+
+.loginForm-module-scss-module__j9nDEG__containerLogin h3 {
+  color: #fff;
+  text-align: center;
+  background-color: #0092b8;
+  border-radius: 6px 6px 0 0;
+  padding: 1rem;
+}
+
+.loginForm-module-scss-module__j9nDEG__containerLogin p {
+  text-align: center;
+  color: #8b0836;
+  background-color: #ffccd3;
+  border-radius: 6px;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 10px 0;
+  font-size: 14px;
+}
+
+
+/*# sourceMappingURL=src_app_components_login_loginForm_module_scss_module_e7b3e7d8.css.map*/
