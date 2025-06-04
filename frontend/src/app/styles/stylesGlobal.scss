@@ -1,0 +1,62 @@
+@use './variables.scss' as *;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f8f9fa;
+  color: #212529;
+}
+
+.btn {
+  width: 100%;
+  background-color: #dfdfdf;
+  border: none;
+  padding: $padding-input;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #d4d4d4;
+  }
+
+  &:focus {
+    background-color: #ccc;
+  }
+}
+
+.btn-primary {
+  background-color: $primary;
+  color: #fff;
+
+  &:hover {
+    background: $secondary;
+  }
+
+  &:focus {
+    background: $primary;
+  }
+}
+
+.form-control {
+  width: 100%;
+  padding: $padding-input;
+  margin-bottom: 1rem;
+  border-radius: $border-radius;
+  border: 0.1rem solid #ccc;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    border-color: $secondary;
+  }
+
+  &:focus {
+    border-color: $primary;
+  }
+}
