@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Cesar%20Reyes/Desktop/Proyecto_DAW2/Proyecto-Q2-2025/frontend/src/app/%28pages%29/inicio/page.tsx"],"sourcesContent":["'use client'\r\nimport React from 'react'\r\nimport styles from './inicio.module.scss'\r\n\r\nexport default function page() {\r\n  return (\r\n    <div>\r\n      <h1>Bienvenido a Geticket</h1>\r\n      <h5>Acciones rápidas</h5>\r\n      <button className='btn btn-secondary'>Nuevo ticket</button>\r\n      <button className='btn btn-secondary'>Tickets</button>\r\n      <button className='btn btn-secondary'>Reportes</button>\r\n    </div>\r\n  )\r\n}\r\n"],"names":[],"mappings":";;;;AAAA;;AAIe,SAAS;IACtB,qBACE,8OAAC;;0BACC,8OAAC;0BAAG;;;;;;0BACJ,8OAAC;0BAAG;;;;;;0BACJ,8OAAC;gBAAO,WAAU;0BAAoB;;;;;;0BACtC,8OAAC;gBAAO,WAAU;0BAAoB;;;;;;0BACtC,8OAAC;gBAAO,WAAU;0BAAoB;;;;;;;;;;;;AAG5C","debugId":null}}]
-}
