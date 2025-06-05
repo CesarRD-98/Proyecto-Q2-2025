@@ -1,13 +1,24 @@
-@use '../../styles//variables.scss' as *;
-
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4rem;
+  text-align: center;
+}
 
-    button {
-        margin: 0.75rem;
-    }
+.icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: #0070f3;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #555;
 }
