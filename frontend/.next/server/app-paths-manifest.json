@@ -1,8 +1,0 @@
-{
-  "/(pages)/inicio/page": "app/(pages)/inicio/page.js",
-  "/(pages)/reportes/page": "app/(pages)/reportes/page.js",
-  "/(pages)/tickets/page": "app/(pages)/tickets/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/page": "app/page.js"
-}
