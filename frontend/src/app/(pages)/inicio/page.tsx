@@ -16,6 +16,7 @@ export default function page() {
     <div className={styles.container}>
       <h1>Bienvenido a Geticket</h1>
       <h5>Probando commit</h5>
+      <h2>Grupo #2</h2>
       <h5>Acciones rápidas</h5>
       <div className="">
         <button className='btn btn-secondary' onClick={ () => navegationPage("/inicio")}>Nuevo ticket</button>
