@@ -1,41 +1,58 @@
 'use client';
-import dynamic from 'next/dynamic';
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { useEffect, useState } from 'react';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import styles from './GraficoTickets.module.scss';
 
 const data = [
-  { name: 'Abierto', value: 29 },
-  { name: 'En Progreso', value: 40 },
-  { name: 'Escalado', value: 161 },
-  { name: 'Reabierto', value: 1 },
-  { name: 'Solucionado', value: 1092 },
+  { name: 'Abierto', value: 5 },
+  { name: 'En Progreso', value: 3 },
+  { name: 'Escalado', value: 2 },
+  { name: 'Reabierto', value: 2 },
+  { name: 'Solucionado', value: 2 },
 ];
 
-const COLORS = ['#00C49F', '#FF8042', '#FFBB28', '#00BFFF', '#00D664'];
+const COLORS = ['#f0f000', '#00ff00', '#ff0000', '#ff9d00', '#000080'];
 
 export default function GraficoTickets() {
+  const [showLegend, setShowLegend] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowLegend(true);
+    }, 3300); // animación delay
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
-    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-      <h3>Resumen de Tickets</h3>
-      <PieChart width={400} height={300}>
+    <div className={styles.wrapper}>
+      <PieChart width={400} height={400}>
         <Pie
           data={data}
           cx="50%"
           cy="50%"
-          label
-          outerRadius={110}
+          outerRadius={200}
           fill="#8884d8"
           dataKey="value"
-          isAnimationActive
-          animationBegin={2000}         //  espera para iniciar
-          animationDuration={2000}      //  animación suave
+          isAnimationActive={true}
+          animationBegin={1500}
+          animationDuration={1800}
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
           ))}
         </Pie>
         <Tooltip />
-        <Legend />
       </PieChart>
+
+      <ul className={`${styles.legend} ${showLegend ? styles.visible : ''}`}>
+        {data.map((entry, index) => (
+          <li key={index}>
+            <span className={styles.colorBox} style={{ backgroundColor: COLORS[index] }}></span>
+            <strong>{entry.name}</strong>: {entry.value}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
