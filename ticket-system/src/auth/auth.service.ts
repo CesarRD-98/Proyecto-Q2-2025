@@ -22,9 +22,15 @@ export class AuthService {
 
   // Este método lo llama el controlador para devolver el token
   async login(user: any) {
-    const payload = { sub: user.id, email: user.email, role: user.role };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
-  }
+  const payload = { sub: user.id, email: user.email, role: user.role };
+  return {
+    access_token: this.jwtService.sign(payload),
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+  };
+}
 }
