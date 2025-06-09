@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Cesar%20Reyes/Desktop/Proyecto_DAW2/Proyecto-Q2-2025/Template_Proyecto/frontend/src/app/components/notificacionBell/notificacion.module.scss.module.css"],"sourcesContent":[".container{position:relative;display:inline-block}.iconContainer{cursor:pointer;position:relative}.badge{position:absolute;top:0;right:0;background:red;color:#fff;border-radius:50%;width:20px;height:20px;text-align:center;font-size:14px}.menu{position:absolute;top:40px;right:0;background:#fff;box-shadow:0 4px 6px rgba(0,0,0,.1);padding:10px;border-radius:5px;width:200px}"],"names":[],"mappings":"AAAA;;;;;AAAkD;;;;;AAAgD;;;;;;;;;;;;;AAA2I","debugId":null}}]
-}

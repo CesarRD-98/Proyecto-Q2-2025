@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/Cesar%20Reyes/Desktop/Proyecto_DAW2/Proyecto-Q2-2025/Template_Proyecto/frontend/src/app/%28pages%29/layout.tsx"],"sourcesContent":["import React from 'react'\r\nimport Navbar from '../components/navbar/navbar'\r\n\r\nexport default function layout({children}: {children: React.ReactNode}) {\r\n  return (\r\n    <>\r\n    \r\n    </>\r\n    // <Navbar />\r\n  )\r\n}\r\n"],"names":[],"mappings":";;;;;AAGe,SAAS,OAAO,EAAC,QAAQ,EAA8B;IACpE,qBACE;AAKJ","debugId":null}}]
-}

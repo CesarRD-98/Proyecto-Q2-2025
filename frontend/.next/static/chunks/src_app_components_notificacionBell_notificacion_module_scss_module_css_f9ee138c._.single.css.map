@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/src/app/components/notificacionBell/notificacion.module.scss.module.css"],"sourcesContent":[".container{display:flex}.iconContainer{position:relative;transition:.2s ease-in}.iconContainer:active{color:#ccc}.badge{position:absolute;top:0;right:0;background:red;color:#fff;border-radius:50%;width:14px;height:14px;text-align:center;font-size:12px}.menu{position:absolute;top:60px;right:120px;background:#fff;color:#000;box-shadow:0 4px 6px rgba(0,0,0,.1);padding:1.2rem;border-radius:5px;z-index:2}.menu h4{margin-bottom:8px;padding-bottom:.5rem;border-bottom:2px solid #ccc}.ul{display:flex;flex-direction:column;gap:.5rem !important}.ul li{width:100%;padding:12px;color:#000;text-align:left;border-radius:6px;border:1px solid #ccc;font-size:14px}.ul li:hover{background-color:#f7f7f7}.ul li:active{background-color:#f3f3f3}"],"names":[],"mappings":"AAAA;;;;AAAwB;;;;;AAAwD;;;;AAAiC;;;;;;;;;;;;;AAA2I;;;;;;;;;;;;AAAuJ;;;;;;AAA6E;;;;;;AAA4D;;;;;;;;;;AAAiH;;;;AAAsC"}}]
-}

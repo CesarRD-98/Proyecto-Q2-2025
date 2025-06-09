@@ -1,40 +1,127 @@
-"use client";
-import React from "react";
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
-
-// se debe crear en models 
 interface Ticket {
-    id: number;
-    titulo: string;
-    estado: string;
-    prioridad: string;
-    fecha: string;
-};
+  id: number;
+  title: string;
+  description: string;
+  status: string;
+  createdAt: string;
+}
 
-// Datos de ejemplo
-const data: Ticket[] = [
-    { id: 1001, titulo: "Error en login", estado: "Abierto", prioridad: "Alta", fecha: "2025-06-01" },
-    { id: 1002, titulo: "No carga perfil", estado: "Cerrado", prioridad: "Media", fecha: "2025-05-30" },
-    { id: 1003, titulo: "Nueva funcionalidad", estado: "Pendiente", prioridad: "Baja", fecha: "2025-05-28" },
-    { id: 1004, titulo: "Problema con notificaciones", estado: "Abierto", prioridad: "Alta", fecha: "2025-05-25" },
-    { id: 1005, titulo: "Error en la base de datos", estado: "Cerrado", prioridad: "Alta", fecha: "2025-05-20" },
-    { id: 1006, titulo: "Actualización de seguridad", estado: "Pendiente", prioridad: "Media", fecha: "2025-05-15" },
-    { id: 1007, titulo: "Mejora en la interfaz", estado: "Abierto", prioridad: "Baja", fecha: "2025-05-10" },
-    { id: 1008, titulo: "Problema de rendimiento", estado: "Cerrado", prioridad: "Alta", fecha: "2025-05-05" },
-    { id: 1009, titulo: "Integración con API externa", estado: "Pendiente", prioridad: "Media", fecha: "2025-04-30" },
-    { id: 1010, titulo: "Error de validación de formulario", estado: "Abierto", prioridad: "Baja", fecha: "2025-04-25" },
-];
+export default function TicketsPage() {
+  const [tickets, setTickets] = useState<Ticket[]>([]);
 
-// Columnas definidas para MRT
-const columns: MRT_ColumnDef<Ticket>[] = [
-    { accessorKey: "id", header: "ID" },
-    { accessorKey: "titulo", header: "Título" },
-    { accessorKey: "estado", header: "Estado" },
-    { accessorKey: "prioridad", header: "Prioridad" },
-    { accessorKey: "fecha", header: "Fecha" },
-];
+  useEffect(() => {
+    const fetchTickets = async () => {
+      const token = localStorage.getItem('access_token'); // 🔑 Cargar token dinámicamente
 
-export default function TicketTable() {
-    return <MaterialReactTable columns={columns} data={data} />;
+      if (!token) {
+        console.warn('No se encontró token. Debes iniciar sesión.');
+        return;
+      }
+
+      try {
+        const response = await axios.get('http://localhost:3000/tickets', {
+          headers: {
+            Authorization: token
+          }
+        });
+        setTickets(response.data);
+      } catch (error) {
+        console.error('Error al cargar tickets:', error);
+      }
+    };
+
+    fetchTickets();
+  }, []);
+
+  const handleEdit = (ticket: Ticket) => {
+    console.log('Editar:', ticket);
+  };
+
+  const handleDelete = (ticket: Ticket) => {
+    console.log('Eliminar:', ticket);
+  };
+
+  const columns: MRT_ColumnDef<Ticket>[] = [
+    { accessorKey: 'id', header: 'ID' },
+    { accessorKey: 'title', header: 'Título' },
+    { accessorKey: 'description', header: 'Descripción' },
+    { accessorKey: 'status', header: 'Estado' },
+    {
+      accessorKey: 'createdAt',
+      header: 'Fecha',
+      Cell: ({ cell }) => {
+        const fecha = new Date(cell.getValue<string>());
+        return fecha.toLocaleDateString();
+      },
+    },
+    {
+      accessorKey: 'acciones',
+      header: 'Acciones',
+      Cell: ({ row }) => (
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <button
+            style={{
+              backgroundColor: '#0070f3',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '0.4rem',
+              cursor: 'pointer',
+              transition: 'background 0.2s ease',
+            }}
+            onClick={() => handleEdit(row.original)}
+          >
+            <FontAwesomeIcon icon={faEdit} />
+          </button>
+          <button
+            style={{
+              backgroundColor: '#d32f2f',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '0.4rem',
+              cursor: 'pointer',
+              transition: 'background 0.2s ease',
+            }}
+            onClick={() => handleDelete(row.original)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h1 style={{ marginBottom: '20px', fontSize: '24px' }}>Gestión de Tickets</h1>
+
+      <MaterialReactTable
+        columns={columns}
+        data={tickets}
+        muiTableProps={{
+          sx: {
+            borderRadius: '10px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+          },
+        }}
+        muiTableBodyRowProps={{
+          hover: true,
+          sx: {
+            '&:hover': {
+              backgroundColor: '#f9f9f9',
+            },
+          },
+        }}
+      />
+    </div>
+  );
 }
