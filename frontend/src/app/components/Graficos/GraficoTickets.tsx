@@ -11,7 +11,7 @@ const data = [
   { name: 'Solucionado', value: 2 },
 ];
 
-const COLORS = ['#f0f000', '#00ff00', '#ff0000', '#ff9d00', '#000080'];
+const COLORS = ['#E3E300', '#00E500', '#E80000', '#ff9d00', '#000080'];
 
 export default function GraficoTickets() {
   const [showLegend, setShowLegend] = useState(false);

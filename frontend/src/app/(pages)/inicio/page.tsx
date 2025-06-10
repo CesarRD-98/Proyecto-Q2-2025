@@ -6,12 +6,13 @@ import GraficoTicketsClient from '../../components/Graficos/GraficoTicketsClient
 export default function Inicio() {
   return (
     <div className={styles.container}>
-      <FaRocket className={styles.icon} />
-      <h1 className={styles.title}>Bienvenido a Geticket</h1>
+      <img src="/Logo-geticket.png" className={styles.logo}></img>
+      {/* <FaRocket className={styles.icon} /> */}
+      <h1 className={styles.title}>Bienvenido a GeTicket</h1>
       <p className={styles.subtitle}>Tu sistema de gestión de tickets rápido y eficiente</p>
 
       {        }
   <GraficoTicketsClient />
     </div>
-  );
+  ); 
 }

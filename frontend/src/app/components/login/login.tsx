@@ -29,6 +29,11 @@ export default function Login() {
 
     return (
         <>
+        <div className={styles.containerLogo}>
+            <img src="/Logo-geticket.png"></img>
+            <h2>GeTicket</h2>
+        </div>
+         
             <div className={styles.containerLogin}>
                 <form action="">
                     <h3 className="">Inicio de sesión</h3>
