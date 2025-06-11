@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { FaHome, FaListAlt, FaChartBar, FaPlus, FaPaperclip } from 'react-icons/fa';
 import NotificacionBell from '../notificacionBell/notificacionBell';
 import UserIcon from '../userIcon/userIcon';
-import styles from './navbar.module.scss';
+import styles from '../../styles/components/navbar.module.scss';
 
 export default function Navbar() {
   const pathname = usePathname();

@@ -1,5 +1,5 @@
 'use client';
-import styles from './reportes.module.scss';
+import styles from '../../styles/pages/reportes.module.scss';
 
 export default function ReportesPage() {
   return (

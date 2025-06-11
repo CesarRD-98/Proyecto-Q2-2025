@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';
-import styles from './GraficoTickets.module.scss';
+import styles from '../../styles/components/GraficoTickets.module.scss';
 
 const data = [
   { name: 'Abierto', value: 5 },

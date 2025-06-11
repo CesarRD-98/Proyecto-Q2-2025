@@ -5,9 +5,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: linear-gradient(90deg, #179F27, #E96C0C);
+  // background: linear-gradient(90deg, #179F27, #E96C0C);
+  background: linear-gradient(90deg, #00ADF2, #007CB1);
+  background: $color-dark-base;
   box-shadow: $shadow-soft;
-  color: $text-color;
+  color: $color-text-primary;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -26,7 +28,7 @@
   color: white;
   font-weight: 500;
   padding: 0.5rem 1rem;
-  border-radius: $border-radius;
+  border-radius: $radius-default;
   transition: background-color 0.3s ease, transform 0.2s ease;
 
   &:hover {
