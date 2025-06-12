@@ -45,7 +45,7 @@ export default function UserIcon() {
                 <div className={styles.menu}>
                     <h4>Usuario Admin</h4>
                     <ul className={styles.ul}>
-                        <li>Pedir cambio de contraseña</li>
+                        <li>Solicitar cambio de contraseña</li>
                         <li onClick={logout}><FontAwesomeIcon icon={faRightFromBracket} /> Cerrar sesión</li>
                     </ul>
                 </div>

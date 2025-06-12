@@ -6,6 +6,7 @@
 
 .iconContainer {
     position: relative;
+    color: $color-icon;
     transition: 0.2s ease-in;
 
     &:active {
@@ -41,6 +42,7 @@
         padding: 12px;
         color: #000;
         text-align: left;
+        list-style: none;
         border-radius: $radius-default;
         border: 1px solid #ccc;
         font-size: 14px;

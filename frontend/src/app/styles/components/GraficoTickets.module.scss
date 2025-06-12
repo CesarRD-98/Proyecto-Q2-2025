@@ -1,32 +1,38 @@
 .wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-  margin-top: 2rem;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
 }
 
 .legend {
   list-style: none;
   padding: 0;
   margin: 0;
-  font-size: 1rem;
-  line-height: 2rem;
   opacity: 0;
-  transform: translateX(50px);
-  transition: all 0.6s ease-out;
+  transition: opacity 0.6s ease-in-out;
+  font-size: 0.9rem;
+  text-align: left;
+}
 
-  &.visible {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.visible {
+  opacity: 1;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
 }
 
 .colorBox {
-  display: inline-block;
   width: 12px;
   height: 12px;
-  margin-right: 8px;
   border-radius: 2px;
+  margin-right: 8px;
 }
+
