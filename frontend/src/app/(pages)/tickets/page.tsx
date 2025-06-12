@@ -20,7 +20,7 @@ export default function TicketsPage() {
 
   useEffect(() => {
     const fetchTickets = async () => {
-      const token = localStorage.getItem('access_token'); // 🔑 Cargar token dinámicamente
+      const token = localStorage.getItem('token'); // 🔑 Cargar token dinámicamente
 
       if (!token) {
         console.warn('No se encontró token. Debes iniciar sesión.');
@@ -28,9 +28,9 @@ export default function TicketsPage() {
       }
 
       try {
-        const response = await axios.get('http://localhost:3000/tickets', {
+        const response = await axios.get('http://localhost:5000/tickets', {
           headers: {
-            Authorization: token
+            Authorization: `Bearer ${token}`
           }
         });
         setTickets(response.data);
