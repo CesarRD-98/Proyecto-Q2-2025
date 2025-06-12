@@ -8,8 +8,9 @@
   grid-template-columns: repeat(2, 1fr); // 50% + 50%
   gap: 2rem;
 
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr; // 100% en móviles
+  @media (max-width: 880px) {
+    grid-template-columns: 1fr;
+    text-align: center;
   }
 }
 

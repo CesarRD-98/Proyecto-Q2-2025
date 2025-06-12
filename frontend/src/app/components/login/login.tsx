@@ -14,14 +14,19 @@ export default function Login() {
     const [contrasena, setContrasena] = useState<string>("")
     const [message, setMessage] = useState<string>("")
 
+    const isEmail = (email: string) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+    }
 
     async function verifyLogin(event: React.FormEvent) {
         event.preventDefault()
 
         if (correo === "" || contrasena === "") {
-            setMessage("Por favor, ingrese su usuario y contraseña.")
+            setMessage("Por favor, ingrese su correo y contraseña.")
             return
         }
+
+        if (!isEmail(correo)) return setMessage('Ingrese un correo válido')
 
         const { success, message, status, role } = await authUser(correo, contrasena)
 

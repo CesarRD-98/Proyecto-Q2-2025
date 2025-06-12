@@ -5,6 +5,7 @@ import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import ProtectedRoute from '@/app/components/protectedRoute/protectedRoute';
 
 interface Ticket {
   id: number;
@@ -101,27 +102,29 @@ export default function TicketsPage() {
   ];
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1 style={{ marginBottom: '20px', fontSize: '24px' }}>Gestión de Tickets</h1>
+    <ProtectedRoute>
+      <div style={{ padding: '20px' }}>
+        <h1 style={{ marginBottom: '20px', fontSize: '24px' }}>Gestión de Tickets</h1>
 
-      <MaterialReactTable
-        columns={columns}
-        data={tickets}
-        muiTableProps={{
-          sx: {
-            borderRadius: '10px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-          },
-        }}
-        muiTableBodyRowProps={{
-          hover: true,
-          sx: {
-            '&:hover': {
-              backgroundColor: '#f9f9f9',
+        <MaterialReactTable
+          columns={columns}
+          data={tickets}
+          muiTableProps={{
+            sx: {
+              borderRadius: '10px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
             },
-          },
-        }}
-      />
-    </div>
+          }}
+          muiTableBodyRowProps={{
+            hover: true,
+            sx: {
+              '&:hover': {
+                backgroundColor: '#f9f9f9',
+              },
+            },
+          }}
+        />
+      </div>
+    </ProtectedRoute>
   );
 }

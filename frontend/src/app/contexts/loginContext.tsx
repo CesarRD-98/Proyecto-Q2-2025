@@ -1,13 +1,9 @@
 import { createContext } from "react";
-import { User } from "../models/userModel";
+import { LoginType } from "../models/loginContextModel";
 
-export const LoginContext = createContext({
-    token: {} as string,
-    user: {} as User | null,
-    authUser: async (email: string, password: string) => ({
-        success: false,
-        message: '',
-        status: 400,
-        role: null
-    })
+
+export const LoginContext = createContext<LoginType>({
+    user: null,
+    authUser: async () => ({success: false, message: 'undefine'}),
+    logout: () => {}
 })
