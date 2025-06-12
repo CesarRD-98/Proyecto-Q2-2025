@@ -8,15 +8,16 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #f8f9fa;
-  color: #212529;
+  background-color: $color-background;
+  color: $color-text-primary;
 }
 
 .btn {
+  font-size: $text-size-default;
   background-color: #dfdfdf;
   border: none;
-  padding: $padding-input;
-  border-radius: $border-radius;
+  padding: $input-padding;
+  border-radius: $radius-default;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
@@ -30,28 +31,28 @@ body {
 }
 
 .btn-primary {
-  background-color: $primary;
+  background: $color-primary;
   color: #fff;
 
   &:hover {
-    background: $secondary;
+    background: $color-primary-hover;
   }
 
   &:active {
-    background: $primary;
+    background: $color-primary-active;
   }
 }
 
 .btn-secondary {
-  background-color: $secondary;
+  background-color: $color-primary;
   color: #fff;
 
   &:hover {
-    background: $primary;
+    background: $color-primary-hover;
   }
 
   &:active {
-    background: $secondary;
+    background: $color-primary-active;
   }
 }
 
@@ -61,18 +62,25 @@ body {
 
 .form-control {
   width: 100%;
-  padding: $padding-input;
+  padding: $input-padding;
   margin-bottom: 1rem;
-  border-radius: $border-radius;
-  border: 0.1rem solid #ccc;
+  border-radius: $radius-default;
+  border: 0.1rem solid $input-border;
   outline: none;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    border-color: $secondary;
+    border-color: $color-dark-base-hover;
   }
 
   &:focus {
-    border-color: $primary;
+    border-color: $input-focus-border;
   }
+}
+
+.form-label {
+  display: block;
+  margin: 0.2rem 0;
+  color: $color-text-primary;
+  font-size: $text-size-default;
 }

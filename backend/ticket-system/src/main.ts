@@ -6,14 +6,13 @@ import * as bcrypt from 'bcrypt';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  // Habilitar CORS para React (localhost:3001)
-  app.enableCors({
-    origin: 'http://localhost:3001',
-    credentials: true, // opcional, puedes poner false si no usas cookies
-  });
-
   app.useGlobalPipes(new ValidationPipe());
+
+  app.enableCors({
+    origin: '*', // o usa 'http://localhost:3000' para más seguridad
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
 
   const usersService = app.get(UsersService);
 
@@ -33,6 +32,6 @@ async function bootstrap() {
     console.log('ℹ️ Usuario admin ya existe:', adminEmail);
   }
 
-  await app.listen(3000);
+  await app.listen(5000);
 }
 bootstrap();

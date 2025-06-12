@@ -1,17 +1,15 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
-import styles from './userIcon.module.scss'
+import styles from '../../styles/components/userIcon.module.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
-import { useRouter } from 'next/navigation';
+import { useLoginContext } from '@/app/providers/loginProvider';
 
 
 export default function UserIcon() {
     const [showMenu, setShowMenu] = useState(false);
-
     const menuRef = useRef<HTMLDivElement>(null);
-
-    const router = useRouter()
+    const { user, logout } = useLoginContext()
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
@@ -31,10 +29,6 @@ export default function UserIcon() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [showMenu]);
 
-    function logout() {
-        router.push('/')
-    }
-
     return (
         <div className={styles.container} ref={menuRef}>
             <div className={styles.iconContainer} onClick={() => setShowMenu(!showMenu)}>
@@ -43,9 +37,9 @@ export default function UserIcon() {
 
             {showMenu && (
                 <div className={styles.menu}>
-                    <h4>Usuario Admin</h4>
+                    <h4>Usuario {user?.role}</h4>
                     <ul className={styles.ul}>
-                        <li>Pedir cambio de contraseña</li>
+                        <li>Solicitar cambio de contraseña</li>
                         <li onClick={logout}><FontAwesomeIcon icon={faRightFromBracket} /> Cerrar sesión</li>
                     </ul>
                 </div>

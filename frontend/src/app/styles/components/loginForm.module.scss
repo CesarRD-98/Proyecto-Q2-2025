@@ -1,0 +1,52 @@
+@use '../../styles/variables.scss' as *;
+
+.containerLogin {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  margin: 4% auto;
+  background: #fff;
+  border-radius: $radius-default;
+
+  .container {
+    padding: 2rem;
+  }
+
+  h3 {
+    background-color: $color-dark-base;
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    border-radius: $radius-default $radius-default 0 0;
+  }
+
+  p {
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 1rem;
+    border-radius: $radius-default;
+    background-color: $color-error-bg-soft;
+    font-size: $text-size-default;
+    text-align: center;
+    color: $color-error;
+  }
+}
+
+.containerLogo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h2 {
+    font: 1.5em sans-serif;
+    font-weight: bold;
+    background: linear-gradient(90deg, #003B67, #007CB1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    background-clip: text;
+    color: transparent;
+    margin-top: -30px;
+  }
+}
