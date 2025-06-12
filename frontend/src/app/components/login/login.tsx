@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react'
+import Image from 'next/image';
 import styles from "../../styles/components/loginForm.module.scss";
 import { useRouter } from 'next/navigation';
 
@@ -33,7 +34,14 @@ export default function Login() {
                 <form action="">
                     <h3 className="">Inicio de sesión</h3>
                     <div className={styles.containerLogo}>
-                        <img src="/Logo-geticket.png"></img>
+                        <div className="">
+                            <Image
+                                src="/Logo-geticket.png"
+                                alt="Logo GeTicket"
+                                width={120}
+                                height={120}
+                            />
+                        </div>
                         <h2>GeTicket</h2>
                     </div>
                     <div className={styles.container}>

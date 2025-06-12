@@ -7,7 +7,6 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr); // 50% + 50%
   gap: 2rem;
-  align-items: center;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr; // 100% en móviles
@@ -19,7 +18,9 @@
 }
 
 .logo {
-  width: 140px;
+  width: 160px;
+  height: auto;
+  margin: -26px;
 }
 
 .title {
