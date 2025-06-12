@@ -1,0 +1,35 @@
+@use '../variables.scss' as *;
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.legend {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.visible {
+  opacity: 1;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.colorBox {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  margin-right: 8px;
+}
+

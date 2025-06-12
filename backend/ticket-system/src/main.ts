@@ -8,6 +8,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
 
+  app.enableCors({
+    origin: '*', // o usa 'http://localhost:3000' para más seguridad
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
+
   const usersService = app.get(UsersService);
 
   // 👇 Seeding: crear usuario admin si no existe
@@ -26,6 +32,6 @@ async function bootstrap() {
     console.log('ℹ️ Usuario admin ya existe:', adminEmail);
   }
 
-  await app.listen(3000);
+  await app.listen(5000);
 }
 bootstrap();

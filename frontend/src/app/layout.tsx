@@ -4,6 +4,7 @@ import "./globals.css";
 import './styles/stylesGlobal.scss';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
+import LoginProvider from "./providers/loginProvider";
 config.autoAddCss = false;
 
 
@@ -30,7 +31,9 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <LoginProvider>
+          {children}
+        </LoginProvider>
       </body>
     </html>
   );
