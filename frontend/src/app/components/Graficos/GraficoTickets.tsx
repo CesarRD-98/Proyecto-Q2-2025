@@ -53,8 +53,8 @@ export default function GraficoTickets() {
             data={data}
             cx="50%"
             cy="50%"
-            outerRadius={85}
-            innerRadius={45}
+            outerRadius={100}
+            innerRadius={65}
             labelLine={false}
             label={renderCustomizedLabel}
             dataKey="value"
