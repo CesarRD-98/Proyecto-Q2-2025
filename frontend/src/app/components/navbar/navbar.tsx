@@ -8,13 +8,14 @@ import NotificacionBell from '../notificacionBell/notificacionBell';
 import UserIcon from '../userIcon/userIcon';
 import styles from '../../styles/components/navbar.module.scss';
 import CreateTicket from '../createTicket/createTicket';
+import { useLoginContext } from '@/app/providers/loginProvider';
 
 export default function Navbar() {
   const pathname = usePathname();
   const [showModal, setShowModal] = useState(false);
-  const [isVisible, setIsVisible] = useState(false); 
+  const [isVisible, setIsVisible] = useState(false);
   const [animationClass, setAnimationClass] = useState(styles.fadeIn);
-  const [user, setUser] = useState('Admin');
+  const { user } = useLoginContext()
 
   useEffect(() => {
     if (showModal) {
@@ -51,7 +52,7 @@ export default function Navbar() {
             Nuevo Ticket
           </button>
           <li><NotificacionBell /></li>
-          <li className={styles.userIcon}><label className={styles.userLogin}>{user}</label> <UserIcon /></li>
+          <li className={styles.userIcon}><label className={styles.userLogin}>{user?.email}</label> <UserIcon /></li>
         </div>
       </nav>
 

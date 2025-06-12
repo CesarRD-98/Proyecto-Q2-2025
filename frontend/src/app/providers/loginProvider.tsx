@@ -1,44 +1,58 @@
+'use client'
 import React, { useContext, useState } from 'react'
 import { ChildrenModel } from '../models/childrenModel'
 import { LoginContext } from '../contexts/loginContext'
 import axios from 'axios'
+import { User } from '../models/userModel'
 
 const _url: string = 'http://localhost:5000'
 
 export default function LoginProvider({ children }: ChildrenModel) {
 
-    const [token, setToken] = useState<string | null>(null)
-    const [user, setUser] = useState<string | null>(null)
-    const [password, setPassword] = useState<string | null>(null)
+    const [token, setToken] = useState<string>('')
+    const [user, setUser] = useState<User | null>(null)
 
-    const authUser = async () => {
+    const authUser = async (email: string, password: string): Promise<any> => {
         try {
-            const response = await axios.post(`${_url}/auth`, { user, password }, {
-                headers: {'Content-Type': 'application/json'}
-            })
+            const response = await axios.post(`${_url}/auth/login`, { email, password })
 
-            if (response.status === 200) {
-                setToken(response.data.token)
-                console.log(response.data);
-                // localStorage.setItem('token', token ? token : '')
+            if (response.status === 201) {
+                const { access_token, user } = response.data
+
+                setToken(access_token);
+                setUser(user)
+
+                localStorage.setItem('token', access_token);
+                localStorage.setItem('user', JSON.stringify(user))
+
+                return ({ success: true, message: 'Inicio de sesion exitoso', status: 201, role: user.role });
             }
 
-        } catch (error) {
-            console.error('Error al iniciar sesion', error);
+            return ({ success: false, message: 'Ocurrio un problema al iniciar sesión', status: 400, role: null })
+        } catch (error: any) {
+            if (axios.isAxiosError(error)) {
+                if (error.response) {
+                    const { status } = error.response
+                    if (status === 401) {
+                        console.warn('Credenciales inválidas')
+                        return ({ success: false, message: 'Credenciales inválidas', status: 401, role: null })
+                    }
+                } else {
+                    console.error('No hubo respuesta del servidor')
+                }
+            }
         }
     }
 
     return (
-        <LoginContext.Provider value={{ token, authUser }}>
-            {children}
-        </LoginContext.Provider>
+        <LoginContext.Provider value={{ token, user, authUser }}>{children}</LoginContext.Provider>
     )
 }
 
 export const useLoginContext = () => {
     const context = useContext(LoginContext)
     if (!context) {
-        return new Error('UseLoginContext necesita de un proveedor')
+        throw new Error('UseLoginContext debe usarse dentro de un LoginProvider')
     }
     return context
 }

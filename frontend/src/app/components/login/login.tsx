@@ -3,30 +3,38 @@ import React, { useState } from 'react'
 import Image from 'next/image';
 import styles from "../../styles/components/loginForm.module.scss";
 import { useRouter } from 'next/navigation';
+import { useLoginContext } from '@/app/providers/loginProvider';
 
 export default function Login() {
 
     const router = useRouter()
+    const { authUser } = useLoginContext()
 
-    const [usuario, setUsuario] = useState<string>("")
+    const [correo, setUsuario] = useState<string>("")
     const [contrasena, setContrasena] = useState<string>("")
     const [message, setMessage] = useState<string>("")
 
 
-    function verifyLogin(event: React.FormEvent) {
+    async function verifyLogin(event: React.FormEvent) {
         event.preventDefault()
 
-        if (usuario === "" || contrasena === "") {
+        if (correo === "" || contrasena === "") {
             setMessage("Por favor, ingrese su usuario y contraseña.")
             return
         }
 
+        const { success, message, status, role } = await authUser(correo, contrasena)
+
+        if (!success && status === 401) {
+            setMessage(message)
+            return
+        }
+
         setMessage("")
-        router.push('/inicio')
-        // alert('Ups error 404 - Estamos en mantenimiento...')
+        if (role === 'admin') router.push('/inicio')
+        if (role === 'user') router.push('/tickets')
+
     }
-
-
 
     return (
         <>
@@ -46,12 +54,12 @@ export default function Login() {
                     </div>
                     <div className={styles.container}>
                         <div>
-                            <label className='form-label'>Usuario:</label>
+                            <label className='form-label'>Correo:</label>
                             <input
                                 className='form-control'
                                 type="text"
-                                placeholder="Ingrese su nombre de usuario"
-                                value={usuario}
+                                placeholder="Ingrese su correo electrónico"
+                                value={correo}
                                 onChange={(e) => setUsuario(e.target.value)}
                                 required />
                         </div>
