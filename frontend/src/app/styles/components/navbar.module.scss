@@ -1,0 +1,171 @@
+@use '../../styles/variables.scss' as *;
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(45deg, #003B67, #007CB1);
+  box-shadow: $shadow-soft;
+  color: $color-text-primary;
+  z-index: 2;
+}
+
+.navLeft,
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  color: #fff;
+  list-style: none;
+
+  li {
+    cursor: pointer;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    background-color: $color-success;
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      background-color: $color-success-hover;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  font-size: $text-size-default;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: $radius-default;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background-color: #ffffff26;
+    transform: translateY(-2px);
+  }
+}
+
+.userIcon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.userLogin {
+  font-size: $text-size-default;
+  font-weight: bold;
+}
+
+.active {
+  background-color: #ffffff40;
+}
+
+// navbar.module.scss
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: $radius-default;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+}
+
+.fadeOut {
+  animation-name: fadeOut;
+}
+
+.showModal {
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $color-error;
+    color: #fff;
+    font-weight: bold;
+
+    &:hover {
+      background-color: $color-error-hover;
+    }
+  }
+}
+
+@media (max-width: 880px) {
+  .navbar {
+    flex-direction: column;
+  }
+
+  .navLeft,
+  .navRight {
+    gap: 1rem;
+    margin: 8px 0;
+
+    .navItem {
+      gap: 0.5rem;
+      // font-size: 12px;
+    }
+  }
+
+  .modal {
+    padding: 2rem;
+    max-width: 400px;
+  }
+}

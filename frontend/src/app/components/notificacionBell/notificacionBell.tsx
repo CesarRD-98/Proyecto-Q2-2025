@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
-import styles from "./notificacion.module.scss";
+import styles from "../../styles/components/notificacion.module.scss";
 
 export default function NotificationBell() {
     const [showMenu, setShowMenu] = useState(false);

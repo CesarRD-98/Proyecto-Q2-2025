@@ -1,0 +1,42 @@
+.container {
+  width: 100%;
+  padding: 2rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); // 50% + 50%
+  gap: 2rem;
+
+  @media (max-width: 880px) {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+.col-6 {
+  width: 100%;
+}
+
+.logo {
+  width: 160px;
+  height: auto;
+  margin: -26px;
+}
+
+.title {
+  font: 1.2em sans-serif;
+    font-weight: bold;
+    background: linear-gradient(90deg, #003B67, #007CB1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    background-clip: text;
+    color: transparent;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+}
