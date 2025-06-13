@@ -14,26 +14,32 @@ export class TicketsService {
     @InjectRepository(User)
     private userRepo: Repository<User>,
     @InjectRepository(Area)
-  private areaRepo: Repository<Area>,
+    private areaRepo: Repository<Area>,
   ) { }
 
   async create(data: Partial<Ticket>) {
-  const ticket = this.ticketRepo.create(data);
+    const ticket = this.ticketRepo.create(data);
 
-  if (data.area && typeof data.area === 'number') {
-    const area = await this.areaRepo.findOneBy({ id: data.area });
-    if (!area) throw new Error('Área no encontrada');
-    ticket.area = area;
+    if (data.area && typeof data.area === 'number') {
+      const area = await this.areaRepo.findOneBy({ id: data.area });
+      if (!area) throw new Error('Área no encontrada');
+      ticket.area = area;
+    }
+
+    return this.ticketRepo.save(ticket);
   }
 
-  return this.ticketRepo.save(ticket);
-}
-
   async findAll(user: any) {
+    const options: any = {
+      order: { createdAt: 'ASC' },
+      relations: ['user', 'area', 'assignedTo'], // 👈 Esto es lo clave
+    };
+
     if (user.role === 'user') {
-      return this.ticketRepo.find({ where: { user: { id: user.id } }, order: { createdAt: 'ASC' } });
+      options.where = { user: { id: user.id } };
     }
-    return this.ticketRepo.find({ order: { createdAt: 'ASC' } });
+
+    return this.ticketRepo.find(options);
   }
 
   async findOne(id: number) {
