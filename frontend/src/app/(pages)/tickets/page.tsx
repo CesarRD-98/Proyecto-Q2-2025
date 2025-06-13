@@ -28,7 +28,7 @@ export default function TicketsPage() {
       }
 
       try {
-        const response = await axios.get('http://localhost:5000/tickets', {
+        const response = await axios.get('http://localhost:3000/tickets', {
           headers: {
             Authorization: `Bearer ${token}`
           }

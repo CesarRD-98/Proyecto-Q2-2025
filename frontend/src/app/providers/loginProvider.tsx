@@ -7,7 +7,7 @@ import { User } from '../models/userModel'
 import { useRouter } from 'next/navigation'
 import { LoginResponse } from '../models/responseLogin'
 
-const _url: string = 'http://localhost:5000'
+const _url: string = 'http://localhost:3000'
 
 export default function LoginProvider({ children }: ChildrenModel) {
     const router = useRouter()
