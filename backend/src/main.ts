@@ -36,7 +36,6 @@ async function bootstrap() {
     console.log('ℹ️ Usuario admin ya existe:', adminEmail);
   }
 
-<<<<<<< HEAD:ticket-system/src/main.ts
   const areaRepo = dataSource.getRepository(Area);
   const existingAreas = await areaRepo.count();
 
@@ -53,8 +52,5 @@ async function bootstrap() {
 
 
   await app.listen(3000);
-=======
-  await app.listen(5000);
->>>>>>> 19cb69826646f5675a07492025fb389181a57762:backend/ticket-system/src/main.ts
 }
 bootstrap();
