@@ -16,7 +16,7 @@ import { Roles } from '../common/decorators/roles.decorator';
 @Controller('tickets')
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 export class TicketsController {
-  constructor(private ticketsService: TicketsService) {}
+  constructor(private ticketsService: TicketsService) { }
 
   @Post()
   @Roles('user', 'technician', 'admin')
@@ -25,10 +25,11 @@ export class TicketsController {
   }
 
   @Get()
-  @Roles('user', 'technician', 'admin')
+  @Roles('admin', 'technician', 'user')
   findAll(@Request() req) {
     return this.ticketsService.findAll(req.user);
   }
+
 
   @Get(':id')
   @Roles('user', 'technician', 'admin')
@@ -41,4 +42,6 @@ export class TicketsController {
   update(@Param('id') id: number, @Body() body: any) {
     return this.ticketsService.update(id, body);
   }
+
+
 }
