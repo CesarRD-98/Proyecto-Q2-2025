@@ -32,7 +32,7 @@ export class TicketsService {
   async findAll(user: any) {
     const options: any = {
       order: { createdAt: 'ASC' },
-      relations: ['user', 'area', 'assignedTo'], // 👈 Esto es lo clave
+      relations: ['user', 'area', 'assignedTo'], 
     };
 
     if (user.role === 'user') {
