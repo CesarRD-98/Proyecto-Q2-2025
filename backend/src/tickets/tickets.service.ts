@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Between, ILike } from 'typeorm';
 import { Ticket } from './ticket.entity';
-import { Between } from 'typeorm';
 import { User } from '../users/user.entity';
 import { Area } from '../areas/area.entity';
 
@@ -11,11 +10,13 @@ export class TicketsService {
   constructor(
     @InjectRepository(Ticket)
     private ticketRepo: Repository<Ticket>,
+
     @InjectRepository(User)
     private userRepo: Repository<User>,
+
     @InjectRepository(Area)
     private areaRepo: Repository<Area>,
-  ) { }
+  ) {}
 
   async create(data: Partial<Ticket>) {
     const ticket = this.ticketRepo.create(data);
@@ -29,14 +30,36 @@ export class TicketsService {
     return this.ticketRepo.save(ticket);
   }
 
-  async findAll(user: any) {
+  async findAll(user: any, query: any) {
+    const { status, from, to, description } = query;
     const options: any = {
       order: { createdAt: 'ASC' },
-      relations: ['user', 'area', 'assignedTo'], 
+      relations: ['user', 'area', 'assignedTo'],
+      where: {},
     };
 
+    // Si es usuario normal, filtrar solo sus tickets
     if (user.role === 'user') {
-      options.where = { user: { id: user.id } };
+      options.where.user = { id: user.id };
+    }
+
+    // Filtro por estado
+    if (status) {
+      options.where.status = status;
+    }
+
+    // Filtro por descripción parcial
+    if (description) {
+      options.where.description = ILike(`%${description}%`);
+    }
+
+    // Filtro por rango de fechas
+    if (from && to) {
+      options.where.createdAt = Between(new Date(from), new Date(to));
+    } else if (from) {
+      options.where.createdAt = Between(new Date(from), new Date());
+    } else if (to) {
+      options.where.createdAt = Between(new Date('2000-01-01'), new Date(to));
     }
 
     return this.ticketRepo.find(options);
@@ -81,13 +104,22 @@ export class TicketsService {
     return this.ticketRepo.save(ticket);
   }
 
-
-
   async countByStatus(from: Date, to: Date) {
     const [total, finalized] = await Promise.all([
       this.ticketRepo.count({ where: { createdAt: Between(from, to) } }),
-      this.ticketRepo.count({ where: { createdAt: Between(from, to), status: 'finalized' } }),
+      this.ticketRepo.count({
+        where: { createdAt: Between(from, to), status: 'finalized' },
+      }),
     ]);
     return { total, finalized };
+  }
+
+  async delete(id: number) {
+    const ticket = await this.ticketRepo.findOne({ where: { id } });
+    if (!ticket) {
+      throw new Error('Ticket no encontrado');
+    }
+    await this.ticketRepo.remove(ticket);
+    return { message: 'Ticket eliminado correctamente' };
   }
 }

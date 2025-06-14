@@ -7,6 +7,8 @@ import {
   Body,
   UseGuards,
   Request,
+  Delete,
+  Query
 } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -16,7 +18,7 @@ import { Roles } from '../common/decorators/roles.decorator';
 @Controller('tickets')
 @UseGuards(AuthGuard('jwt'), RolesGuard)
 export class TicketsController {
-  constructor(private ticketsService: TicketsService) { }
+  constructor(private ticketsService: TicketsService) {}
 
   @Post()
   @Roles('user', 'technician', 'admin')
@@ -26,10 +28,9 @@ export class TicketsController {
 
   @Get()
   @Roles('admin', 'technician', 'user')
-  findAll(@Request() req) {
-    return this.ticketsService.findAll(req.user);
+  findAll(@Request() req, @Query() query: any) {
+    return this.ticketsService.findAll(req.user, query);
   }
-
 
   @Get(':id')
   @Roles('user', 'technician', 'admin')
@@ -43,5 +44,9 @@ export class TicketsController {
     return this.ticketsService.update(id, body);
   }
 
-
+  @Delete(':id')
+  @Roles('technician', 'admin')
+  delete(@Param('id') id: number) {
+    return this.ticketsService.delete(id);
+  }
 }

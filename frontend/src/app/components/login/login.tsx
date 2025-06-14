@@ -38,7 +38,8 @@ export default function Login() {
         setMessage("")
         if (role === 'admin') router.push('/inicio')
         if (role === 'user') router.push('/tickets')
-
+        if (role === 'technician') router.push('/tickets')
+    
     }
 
     return (
