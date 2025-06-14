@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Not } from 'typeorm';
+import { Repository, Not, In, Between } from 'typeorm';
 import { Ticket } from './ticket.entity';
-import { Between } from 'typeorm';
 import { User } from '../users/user.entity';
 import { Area } from '../areas/area.entity';
 
@@ -30,37 +29,63 @@ export class TicketsService {
   }
 
 
-  async findAll(user: any, page = 1) {
-    const take = 10;
-    const skip = (page - 1) * take;
+  async findAll(user: any, filters: {
+  page: number,
+  from?: string,
+  to?: string,
+  status?: string,
+  area?: number,
+}) {
+  const take = 10;
+  const skip = (filters.page - 1) * take;
 
-    const options: any = {
-      order: { createdAt: 'ASC' },
-      relations: ['user', 'area', 'assignedTo'],
-      where: {
-        status: Not('cancelled'),
-      },
-      skip,
-      take,
-    };
+  const where: any = {};
 
-    if (user.role === 'user') {
-      options.where = {
-        ...options.where,
-        user: { id: user.id },
-      };
-    }
-
-    const [tickets, total] = await this.ticketRepo.findAndCount(options);
-
-    return {
-      total,
-      page,
-      perPage: take,
-      totalPages: Math.ceil(total / take),
-      data: tickets,
-    };
+  // 👤 Usuario normal
+  if (user.role === 'user') {
+    where.user = { id: user.id };
+    where.status = In(['pending', 'in_progress']);
   }
+
+  // 👨‍🔧 Usuario técnico
+  if (user.role === 'technician') {
+    where.assignedTo = { id: user.id }; // Solo los asignados a sí mismo
+    if (filters.status) {
+      where.status = filters.status;
+    }
+  }
+
+  // 👑 Usuario admin
+  if (user.role === 'admin') {
+    if (filters.status) {
+      where.status = filters.status;
+    }
+  }
+
+  if (filters.area) {
+    where.area = { id: filters.area };
+  }
+
+  if (filters.from && filters.to) {
+    where.createdAt = Between(new Date(filters.from), new Date(filters.to));
+  }
+
+  const [tickets, total] = await this.ticketRepo.findAndCount({
+    where,
+    relations: ['user', 'area', 'assignedTo'],
+    order: { createdAt: 'ASC' },
+    skip,
+    take,
+  });
+
+  return {
+    total,
+    page: filters.page,
+    perPage: take,
+    totalPages: Math.ceil(total / take),
+    data: tickets,
+  };
+}
 
   async findOne(id: number) {
     return this.ticketRepo.findOne({ where: { id } });

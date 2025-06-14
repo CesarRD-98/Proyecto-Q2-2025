@@ -25,11 +25,24 @@ export class TicketsController {
     return this.ticketsService.create({ ...body, user: req.user });
   }
 
-  @Get()
+@Get()
 @Roles('user', 'technician', 'admin')
-findAll(@Request() req, @Query('page') page: string) {
+findAll(
+  @Request() req,
+  @Query('page') page: string,
+  @Query('from') from: string,
+  @Query('to') to: string,
+  @Query('status') status: string,
+  @Query('area') area: string,
+) {
   const pageNumber = parseInt(page) || 1;
-  return this.ticketsService.findAll(req.user, pageNumber);
+  return this.ticketsService.findAll(req.user, {
+    page: pageNumber,
+    from,
+    to,
+    status,
+    area: area ? parseInt(area) : undefined,
+  });
 }
 
 
