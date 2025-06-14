@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Not } from 'typeorm';
 import { Ticket } from './ticket.entity';
 import { Between } from 'typeorm';
 import { User } from '../users/user.entity';
@@ -29,17 +29,37 @@ export class TicketsService {
     return this.ticketRepo.save(ticket);
   }
 
-  async findAll(user: any) {
+
+  async findAll(user: any, page = 1) {
+    const take = 10;
+    const skip = (page - 1) * take;
+
     const options: any = {
       order: { createdAt: 'ASC' },
-      relations: ['user', 'area', 'assignedTo'], 
+      relations: ['user', 'area', 'assignedTo'],
+      where: {
+        status: Not('cancelled'),
+      },
+      skip,
+      take,
     };
 
     if (user.role === 'user') {
-      options.where = { user: { id: user.id } };
+      options.where = {
+        ...options.where,
+        user: { id: user.id },
+      };
     }
 
-    return this.ticketRepo.find(options);
+    const [tickets, total] = await this.ticketRepo.findAndCount(options);
+
+    return {
+      total,
+      page,
+      perPage: take,
+      totalPages: Math.ceil(total / take),
+      data: tickets,
+    };
   }
 
   async findOne(id: number) {

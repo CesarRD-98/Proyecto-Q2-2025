@@ -7,6 +7,7 @@ import {
   Body,
   UseGuards,
   Request,
+  Query ,
 } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -25,10 +26,11 @@ export class TicketsController {
   }
 
   @Get()
-  @Roles('admin', 'technician', 'user')
-  findAll(@Request() req) {
-    return this.ticketsService.findAll(req.user);
-  }
+@Roles('user', 'technician', 'admin')
+findAll(@Request() req, @Query('page') page: string) {
+  const pageNumber = parseInt(page) || 1;
+  return this.ticketsService.findAll(req.user, pageNumber);
+}
 
 
   @Get(':id')
