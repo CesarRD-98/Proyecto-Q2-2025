@@ -7,6 +7,7 @@ import {
   Body,
   UseGuards,
   Request,
+  Delete,
   Query ,
 } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
@@ -58,5 +59,10 @@ findAll(
     return this.ticketsService.update(id, body);
   }
 
+  @Delete(':id')
+  @Roles('technician', 'admin')
+  delete(@Param('id') id: number) {
+    return this.ticketsService.delete(id);
+  }
 
 }

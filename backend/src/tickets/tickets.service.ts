@@ -135,4 +135,13 @@ export class TicketsService {
     ]);
     return { total, finalized };
   }
+
+  async delete(id: number) {
+    const ticket = await this.ticketRepo.findOne({ where: { id } });
+    if (!ticket) {
+      throw new Error('Ticket no encontrado');
+    }
+    await this.ticketRepo.remove(ticket);
+    return { message: 'Ticket eliminado correctamente' };
+  }
 }
