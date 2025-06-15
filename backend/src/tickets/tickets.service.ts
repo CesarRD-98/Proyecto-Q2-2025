@@ -18,8 +18,9 @@ export class TicketsService {
 
   async create(data: Partial<Ticket>) {
     const ticket = this.ticketRepo.create(data);
-
+        
     if (data.area && typeof data.area === 'number') {
+      console.log('Entro a la condicion')
       const area = await this.areaRepo.findOneBy({ id: data.area });
       if (!area) throw new Error('Área no encontrada');
       ticket.area = area;
@@ -30,62 +31,62 @@ export class TicketsService {
 
 
   async findAll(user: any, filters: {
-  page: number,
-  from?: string,
-  to?: string,
-  status?: string,
-  area?: number,
-}) {
-  const take = 10;
-  const skip = (filters.page - 1) * take;
+    page: number,
+    from?: string,
+    to?: string,
+    status?: string,
+    area?: number,
+  }) {
+    const take = 10;
+    const skip = (filters.page - 1) * take;
 
-  const where: any = {};
+    const where: any = {};
 
-  // 👤 Usuario normal
-  if (user.role === 'user') {
-    where.user = { id: user.id };
-    where.status = In(['pending', 'in_progress']);
-  }
-
-  // 👨‍🔧 Usuario técnico
-  if (user.role === 'technician') {
-    where.assignedTo = { id: user.id }; // Solo los asignados a sí mismo
-    if (filters.status) {
-      where.status = filters.status;
+    // 👤 Usuario normal
+    if (user.role === 'user') {
+      where.user = { id: user.id };
+      where.status = In(['pending', 'in_progress']);
     }
-  }
 
-  // 👑 Usuario admin
-  if (user.role === 'admin') {
-    if (filters.status) {
-      where.status = filters.status;
+    // 👨‍🔧 Usuario técnico
+    if (user.role === 'technician') {
+      where.assignedTo = { id: user.id }; // Solo los asignados a sí mismo
+      if (filters.status) {
+        where.status = filters.status;
+      }
     }
+
+    // 👑 Usuario admin
+    if (user.role === 'admin') {
+      if (filters.status) {
+        where.status = filters.status;
+      }
+    }
+
+    if (filters.area) {
+      where.area = { id: filters.area };
+    }
+
+    if (filters.from && filters.to) {
+      where.createdAt = Between(new Date(filters.from), new Date(filters.to));
+    }
+
+    const [tickets, total] = await this.ticketRepo.findAndCount({
+      where,
+      relations: ['user', 'area', 'assignedTo'],
+      order: { createdAt: 'ASC' },
+      skip,
+      take,
+    });
+
+    return {
+      total,
+      page: filters.page,
+      perPage: take,
+      totalPages: Math.ceil(total / take),
+      data: tickets,
+    };
   }
-
-  if (filters.area) {
-    where.area = { id: filters.area };
-  }
-
-  if (filters.from && filters.to) {
-    where.createdAt = Between(new Date(filters.from), new Date(filters.to));
-  }
-
-  const [tickets, total] = await this.ticketRepo.findAndCount({
-    where,
-    relations: ['user', 'area', 'assignedTo'],
-    order: { createdAt: 'ASC' },
-    skip,
-    take,
-  });
-
-  return {
-    total,
-    page: filters.page,
-    perPage: take,
-    totalPages: Math.ceil(total / take),
-    data: tickets,
-  };
-}
 
   async findOne(id: number) {
     return this.ticketRepo.findOne({ where: { id } });

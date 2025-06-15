@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import ProtectedRoute from '@/app/components/protectedRoute/protectedRoute';
@@ -15,11 +15,21 @@ interface Ticket {
   description: string;
   status: string;
   createdAt: string;
+  user: {
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+  };
 }
 
 export default function TicketsPage() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [perPage, setPerPage] = useState(10);
   const { user } = useContext(LoginContext);
+  const [filters, setFilters] = useState<any>({});
 
   const fetchTickets = async (params: any = {}) => {
     const token = localStorage.getItem('token');
@@ -28,17 +38,25 @@ export default function TicketsPage() {
     try {
       const response = await axios.get('http://localhost:3000/tickets', {
         headers: { Authorization: `Bearer ${token}` },
-        params
+        params: {
+          page,
+          perPage,
+          ...params
+        }
       });
-      setTickets(response.data);
+
+      const { data, totalPages, perPage: backendPerPage } = response.data;
+      setTickets(data);
+      setTotalPages(totalPages);
+      setPerPage(backendPerPage);
     } catch (error) {
       console.error('Error al cargar tickets:', error);
     }
   };
 
   useEffect(() => {
-    fetchTickets();
-  }, []);
+    fetchTickets(filters);
+  }, [page]);
 
   const handleEdit = async (ticket: Ticket) => {
     const { value: newStatus } = await Swal.fire({
@@ -66,7 +84,7 @@ export default function TicketsPage() {
           { status: newStatus },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        fetchTickets();
+        fetchTickets(filters);
         Swal.fire('¡Actualizado!', 'El status fue actualizado.', 'success');
       } catch (error) {
         Swal.fire('Error', 'No se pudo actualizar el status.', 'error');
@@ -92,7 +110,7 @@ export default function TicketsPage() {
         await axios.delete(`http://localhost:3000/tickets/${ticket.id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        fetchTickets();
+        fetchTickets(filters);
         Swal.fire('Eliminado', 'El ticket ha sido eliminado.', 'success');
       } catch (error) {
         Swal.fire('Error', 'No se pudo eliminar el ticket.', 'error');
@@ -136,12 +154,15 @@ export default function TicketsPage() {
     });
 
     if (formValues) {
-      const filters: any = {};
-      if (formValues.description) filters.description = formValues.description;
-      if (formValues.status) filters.status = formValues.status;
-      if (formValues.from) filters.from = formValues.from;
-      if (formValues.to) filters.to = formValues.to;
-      fetchTickets(filters);
+      const newFilters: any = {};
+      if (formValues.description) newFilters.description = formValues.description;
+      if (formValues.status) newFilters.status = formValues.status;
+      if (formValues.from) newFilters.from = formValues.from;
+      if (formValues.to) newFilters.to = formValues.to;
+
+      setFilters(newFilters);
+      setPage(1);
+      fetchTickets({ ...newFilters, page: 1 });
     }
   };
 
@@ -151,6 +172,7 @@ export default function TicketsPage() {
     { accessorKey: 'description', header: 'Descripción' },
     { accessorKey: 'status', header: 'Estado' },
     { accessorKey: 'createdAt', header: 'Fecha de Creación' },
+    { accessorKey: 'user.name', header: 'Creado por' },
     {
       header: 'Acciones',
       Cell: ({ row }) => {
@@ -176,46 +198,51 @@ export default function TicketsPage() {
       }
     }
   ];
-// ... todo el contenido anterior se mantiene igual
 
-return (
-  <ProtectedRoute>
-    <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Página de Tickets</h1>
-    {user?.role === 'admin' || user?.role === 'technician' ? (
-      <div style={{ marginBottom: '15px', textAlign: 'right', paddingRight: '20px' }}>
-        <button
-          onClick={handleFilter}
-          style={{
-            background: 'linear-gradient(90deg, #007bff, #00bcd4)',
-            color: 'white',
-            padding: '10px 22px',
-            border: 'none',
-            borderRadius: '6px',
-            fontWeight: 'bold',
-            fontSize: '16px',
-            boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-            cursor: 'pointer',
-            transition: 'background 0.3s ease',
-            display: 'flex',
-            alignItems: 'center'
-          }}
-        >
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/2910/2910766.png"
-            alt="Filtrar"
-            style={{ width: '20px', marginRight: '8px' }}
-          />
-          Filtrar Tickets
-        </button>
-      </div>
-    ) : null}
-    <MaterialReactTable 
-      columns={columns} 
-      data={tickets} 
-      enableGlobalFilter={false} 
-      enableColumnActions={false} 
-    />
-  </ProtectedRoute>
-);
-
+  return (
+    <ProtectedRoute>
+      <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Página de Tickets</h1>
+     
+        <div style={{ marginBottom: '15px', textAlign: 'right', paddingRight: '20px' }}>
+          <button
+            onClick={handleFilter}
+            style={{
+              background: 'linear-gradient(90deg, #007bff, #00bcd4)',
+              color: 'white',
+              padding: '10px 22px',
+              border: 'none',
+              borderRadius: '6px',
+              fontWeight: 'bold',
+              fontSize: '16px',
+              boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+              cursor: 'pointer',
+              transition: 'background 0.3s ease',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/2910/2910766.png"
+              alt="Filtrar"
+              style={{ width: '20px', marginRight: '8px' }}
+            />
+            Filtrar Tickets
+          </button>
+        </div>
+      
+      <MaterialReactTable
+        columns={columns}
+        data={tickets}
+        enablePagination
+        manualPagination
+        rowCount={totalPages * perPage}
+        onPaginationChange={({ pageIndex }) => {
+          setPage(pageIndex + 1); // MRT usa index desde 0
+        }}
+        state={{ pagination: { pageIndex: page - 1, pageSize: perPage } }}
+        enableGlobalFilter={false}
+        enableColumnActions={false}
+      />
+    </ProtectedRoute>
+  );
 }
