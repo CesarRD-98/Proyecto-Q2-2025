@@ -7,6 +7,8 @@ import {
   Body,
   UseGuards,
   Request,
+  Delete,
+  Query,
 } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -25,9 +27,23 @@ export class TicketsController {
   }
 
   @Get()
-  @Roles('admin', 'technician', 'user')
-  findAll(@Request() req) {
-    return this.ticketsService.findAll(req.user);
+  @Roles('user', 'technician', 'admin')
+  findAll(
+    @Request() req,
+    @Query('page') page: string,
+    @Query('from') from: string,
+    @Query('to') to: string,
+    @Query('status') status: string,
+    @Query('area') area: string,
+  ) {
+    const pageNumber = parseInt(page) || 1;
+    return this.ticketsService.findAll(req.user, {
+      page: pageNumber,
+      from,
+      to,
+      status,
+      area: area ? parseInt(area) : undefined,
+    });
   }
 
 
@@ -43,5 +59,10 @@ export class TicketsController {
     return this.ticketsService.update(id, body);
   }
 
+  @Delete(':id')
+  @Roles('technician', 'admin')
+  delete(@Param('id') id: number) {
+    return this.ticketsService.delete(id);
+  }
 
 }

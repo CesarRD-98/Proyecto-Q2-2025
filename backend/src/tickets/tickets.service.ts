@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Not, In, Between } from 'typeorm';
 import { Ticket } from './ticket.entity';
-import { Between } from 'typeorm';
 import { User } from '../users/user.entity';
 import { Area } from '../areas/area.entity';
 
@@ -14,26 +13,79 @@ export class TicketsService {
     @InjectRepository(User)
     private userRepo: Repository<User>,
     @InjectRepository(Area)
-  private areaRepo: Repository<Area>,
+    private areaRepo: Repository<Area>,
   ) { }
 
   async create(data: Partial<Ticket>) {
-  const ticket = this.ticketRepo.create(data);
+    const ticket = this.ticketRepo.create(data);
+        
+    if (data.area && typeof data.area === 'number') {
+      console.log('Entro a la condicion')
+      const area = await this.areaRepo.findOneBy({ id: data.area });
+      if (!area) throw new Error('Área no encontrada');
+      ticket.area = area;
+    }
 
-  if (data.area && typeof data.area === 'number') {
-    const area = await this.areaRepo.findOneBy({ id: data.area });
-    if (!area) throw new Error('Área no encontrada');
-    ticket.area = area;
+    return this.ticketRepo.save(ticket);
   }
 
-  return this.ticketRepo.save(ticket);
-}
 
-  async findAll(user: any) {
+  async findAll(user: any, filters: {
+    page: number,
+    from?: string,
+    to?: string,
+    status?: string,
+    area?: number,
+  }) {
+    const take = 10;
+    const skip = (filters.page - 1) * take;
+
+    const where: any = {};
+
+    // 👤 Usuario normal
     if (user.role === 'user') {
-      return this.ticketRepo.find({ where: { user: { id: user.id } }, order: { createdAt: 'ASC' } });
+      where.user = { id: user.id };
+      where.status = In(['pending', 'in_progress']);
     }
-    return this.ticketRepo.find({ order: { createdAt: 'ASC' } });
+
+    // 👨‍🔧 Usuario técnico
+    if (user.role === 'technician') {
+      where.assignedTo = { id: user.id }; // Solo los asignados a sí mismo
+      if (filters.status) {
+        where.status = filters.status;
+      }
+    }
+
+    // 👑 Usuario admin
+    if (user.role === 'admin') {
+      if (filters.status) {
+        where.status = filters.status;
+      }
+    }
+
+    if (filters.area) {
+      where.area = { id: filters.area };
+    }
+
+    if (filters.from && filters.to) {
+      where.createdAt = Between(new Date(filters.from), new Date(filters.to));
+    }
+
+    const [tickets, total] = await this.ticketRepo.findAndCount({
+      where,
+      relations: ['user', 'area', 'assignedTo'],
+      order: { createdAt: 'ASC' },
+      skip,
+      take,
+    });
+
+    return {
+      total,
+      page: filters.page,
+      perPage: take,
+      totalPages: Math.ceil(total / take),
+      data: tickets,
+    };
   }
 
   async findOne(id: number) {
@@ -83,5 +135,14 @@ export class TicketsService {
       this.ticketRepo.count({ where: { createdAt: Between(from, to), status: 'finalized' } }),
     ]);
     return { total, finalized };
+  }
+
+  async delete(id: number) {
+    const ticket = await this.ticketRepo.findOne({ where: { id } });
+    if (!ticket) {
+      throw new Error('Ticket no encontrado');
+    }
+    await this.ticketRepo.remove(ticket);
+    return { message: 'Ticket eliminado correctamente' };
   }
 }
