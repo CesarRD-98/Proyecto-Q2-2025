@@ -60,10 +60,10 @@ export default function CreateTicket() {
     try {
       await axios.post(
         "http://localhost:3000/tickets",
-    {
-        title: form.title,
-        description: form.description
-    },
+        {
+          title: form.title,
+          description: form.description
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
