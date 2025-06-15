@@ -8,7 +8,7 @@ import {
   UseGuards,
   Request,
   Delete,
-  Query ,
+  Query,
 } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -26,25 +26,25 @@ export class TicketsController {
     return this.ticketsService.create({ ...body, user: req.user });
   }
 
-@Get()
-@Roles('user', 'technician', 'admin')
-findAll(
-  @Request() req,
-  @Query('page') page: string,
-  @Query('from') from: string,
-  @Query('to') to: string,
-  @Query('status') status: string,
-  @Query('area') area: string,
-) {
-  const pageNumber = parseInt(page) || 1;
-  return this.ticketsService.findAll(req.user, {
-    page: pageNumber,
-    from,
-    to,
-    status,
-    area: area ? parseInt(area) : undefined,
-  });
-}
+  @Get()
+  @Roles('user', 'technician', 'admin')
+  findAll(
+    @Request() req,
+    @Query('page') page: string,
+    @Query('from') from: string,
+    @Query('to') to: string,
+    @Query('status') status: string,
+    @Query('area') area: string,
+  ) {
+    const pageNumber = parseInt(page) || 1;
+    return this.ticketsService.findAll(req.user, {
+      page: pageNumber,
+      from,
+      to,
+      status,
+      area: area ? parseInt(area) : undefined,
+    });
+  }
 
 
   @Get(':id')
