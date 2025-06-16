@@ -1,27 +1,41 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaPaperclip } from "react-icons/fa";
 import styles from "../../styles/components/createTicket.module.scss";
+import { useGetTickets } from "@/app/providers/getTicketsProvider";
+import { useTicketRefresh } from "@/app/providers/ticketRefreshProvider";
+import { API_URL } from "@/app/API/api.url";
+import { AreasType } from "@/app/models/areasModel";
 
 type TicketForm = {
   title: string;
   description: string;
-  priority: "baja" | "medio" | "alta";
-  area: "TI" | "RRHH" | "Mantenimiento";
+  area: number
 };
 
 export default function CreateTicket() {
+  const { getTickets } = useGetTickets()
+  const { triggerRefresh } = useTicketRefresh()
+  const [color, setColor] = useState("red")
+  const [bgColor, setBgColor] = useState("#FDEDDC")
+  const [area, setArea] = useState<AreasType[]>([])
+
+  useEffect(() => {
+    const load = async () => {
+      const {areas} = await getTickets({params: {}})
+      setArea(areas || [])
+    }
+    load()
+  }, [])
+
   const [form, setForm] = useState<TicketForm>({
     title: "",
     description: "",
-    priority: "medio",
-    area: "TI",
+    area: 1,
   });
-
-  const [archivo, setArchivo] = useState<File | null>(null);
+  
   const [mensaje, setMensaje] = useState<string>(""); // Mensaje de confirmación o error
-  const fechaCreacion = new Date().toISOString().split("T")[0]; // Fecha actual
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -58,27 +72,24 @@ export default function CreateTicket() {
     }
 
     try {
-      await axios.post(
-        "http://localhost:3000/tickets",
-    {
+      await axios.post(`${API_URL}/tickets`, {
         title: form.title,
         description: form.description
-    },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
+      }
       );
 
-      setMensaje(" Ticket creado correctamente.");
+      setColor("green")
+      setBgColor("#E3F6E6")
+      setMensaje("Ticket creado correctamente.");
       setForm({
         title: "",
         description: "",
-        priority: "medio",
-        area: "TI",
+        area: 1,
       });
-      setArchivo(null);
+      triggerRefresh()
+      await getTickets({ params: {} })
     } catch (error) {
       console.error("Error al crear ticket:", error);
       setMensaje(" Error al crear el ticket.");
@@ -116,23 +127,6 @@ export default function CreateTicket() {
       </div>
 
       <div style={{ marginBottom: 12 }}>
-        <label htmlFor="priority" className="form-label">
-          Prioridad
-        </label>
-        <select
-          id="priority"
-          name="priority"
-          value={form.priority}
-          onChange={handleChange}
-          className="form-control"
-        >
-          <option value="baja">Baja</option>
-          <option value="medio">Media</option>
-          <option value="alta">Alta</option>
-        </select>
-      </div>
-
-      <div style={{ marginBottom: 12 }}>
         <label htmlFor="area" className="form-label">
           Seleccionar área
         </label>
@@ -143,23 +137,10 @@ export default function CreateTicket() {
           onChange={handleChange}
           className="form-control"
         >
-          <option value="TI">TI</option>
-          <option value="RRHH">RRHH</option>
-          <option value="Mantenimiento">Mantenimiento</option>
+          {area.map((a) => (
+            <option key={a.id} value={a.id}>{a.name}</option>
+          ))}
         </select>
-      </div>
-
-      <div style={{ marginBottom: 16 }}>
-        <label className={styles.fileLabel}>
-          <FaPaperclip />
-          Adjuntar archivo
-          <input
-            type="file"
-            onChange={(e) =>
-              setArchivo(e.target.files ? e.target.files[0] : null)
-            }
-          />
-        </label>
       </div>
 
       <button type="submit" className="btn w-100 btn-primary">
@@ -170,7 +151,12 @@ export default function CreateTicket() {
         <div
           style={{
             marginTop: 12,
-            color: mensaje.startsWith("") ? "green" : "red",
+            color: color,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            backgroundColor: bgColor,
+            padding: 6,
+            borderRadius: 4
           }}
         >
           {mensaje}

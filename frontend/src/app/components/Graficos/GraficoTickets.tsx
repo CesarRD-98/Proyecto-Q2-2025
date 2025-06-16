@@ -2,17 +2,10 @@
 import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import styles from '../../styles/components/GraficoTickets.module.scss';
+import { useGetTickets } from '@/app/providers/getTicketsProvider';
+import { Ticket } from '@/app/models/ticketModel';
 
-const data = [
-  { name: 'Abierto', value: 5 },
-  { name: 'En Progreso', value: 3 },
-  { name: 'Escalado', value: 2 },
-  { name: 'Reabierto', value: 2 },
-  { name: 'Solucionado', value: 2 },
-];
-
-// Colores suaves y diferenciables
-const COLORS = ['#FAD02C', '#A1C6EA', '#F38181', '#A8D5BA', '#B083AA'];
+const COLORS = ['#FAD02C', '#A1C6EA', '#F38181', '#A8D5BA'];
 
 const renderCustomizedLabel = ({
   cx,
@@ -38,19 +31,40 @@ const renderCustomizedLabel = ({
 };
 
 export default function GraficoTickets() {
+
+  const { getTickets } = useGetTickets()
   const [showLegend, setShowLegend] = useState(false);
+  const [tickets, setTickets] = useState<Ticket[]>([])
 
   useEffect(() => {
+    const load = async () => {
+      const { data } = await getTickets({ all: true})
+      setTickets(data || [])
+    }
+    load()
     const timeout = setTimeout(() => setShowLegend(true), 800);
     return () => clearTimeout(timeout);
   }, []);
 
+
+  const statusCount = tickets.reduce<Record<string, number>>((acc, t) => {
+    const status = t.status
+    acc[status] = (acc[status] || 0) + 1
+    return acc
+  }, {})
+
+  const statusData = Object.entries(statusCount).map(([status, count]) => ({
+    name: status.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase()),
+    value: count
+  }))
+
   return (
     <div className={styles.wrapper}>
+      <h3>Estado de tickets</h3>
       <ResponsiveContainer width={250} height={250}>
         <PieChart>
           <Pie
-            data={data}
+            data={statusData}
             cx="50%"
             cy="50%"
             outerRadius={100}
@@ -61,7 +75,7 @@ export default function GraficoTickets() {
             isAnimationActive={true}
             animationDuration={1000}
           >
-            {data.map((entry, index) => (
+            {statusData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
@@ -73,7 +87,7 @@ export default function GraficoTickets() {
       </ResponsiveContainer>
 
       <ul className={`${styles.legend} ${showLegend ? styles.visible : ''}`}>
-        {data.map((entry, index) => (
+        {statusData.map((entry, index) => (
           <li key={index}>
             <span className={styles.colorBox} style={{ backgroundColor: COLORS[index] }}></span>
             <strong>{entry.name}</strong>: {entry.value}
