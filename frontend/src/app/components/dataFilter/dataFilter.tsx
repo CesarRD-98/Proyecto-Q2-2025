@@ -8,6 +8,7 @@ interface DateFilterProps {
 export default function DateFilter({ onFilter }: DateFilterProps) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  // const [status, setStatus] = useState("")
 
   const handleFilter = () => {
     if (!startDate || !endDate) {
@@ -40,6 +41,15 @@ export default function DateFilter({ onFilter }: DateFilterProps) {
             onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
+        {/* <div className={styles.inputGroup}>
+          <label className="form-label">status: </label>
+          <select name="status" id="status" className="form-control" onChange={(e) => setStatus(e.target.value)}>
+            <option value="pending">pending</option>
+            <option value="in_progress">in_progress</option>
+            <option value="finalized">finalized</option>
+            <option value="cancelled">cancelled</option>
+          </select>
+        </div> */}
         <div className="">
           <button onClick={handleFilter} className='btn btn-primary w-100'>
             Consultar

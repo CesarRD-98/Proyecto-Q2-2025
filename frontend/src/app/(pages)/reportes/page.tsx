@@ -6,6 +6,7 @@ import DateFilter from '@/app/components/dataFilter/dataFilter';
 import axios from 'axios';
 import { AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import { MdAutorenew, MdFormatListBulleted } from "react-icons/md";
+import { API_URL } from '@/app/API/api.url';
 
 export default function ReportesPage() {
   const [tickets, setTickets] = useState<Record<string, number>>({});
@@ -28,7 +29,7 @@ export default function ReportesPage() {
   const fetchTicketsByDateRange = async (start: string, end: string) => {
     try {
       const token = localStorage.getItem('token')
-      const res = await axios.get(`http://localhost:3000/reports?from=${start}&to=${end}`, {
+      const res = await axios.get(`${API_URL}/reports?from=${start}&to=${end}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.data;
