@@ -5,7 +5,7 @@ import styles from '../../styles/components/GraficoTickets.module.scss';
 import { useGetTickets } from '@/app/providers/getTicketsProvider';
 import { Ticket } from '@/app/models/ticketModel';
 
-const COLORS = ['#FAD02C', '#A1C6EA', '#F38181', '#A8D5BA'];
+const COLORS = ['#A8D5BA', '#F38181', '#FAD02C', '#A1C6EA'];
 
 const renderCustomizedLabel = ({
   cx,
