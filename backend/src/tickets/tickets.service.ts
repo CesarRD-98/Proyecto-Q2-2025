@@ -31,62 +31,62 @@ export class TicketsService {
 
 
   async findAll(user: any, filters: {
-    page: number,
-    from?: string,
-    to?: string,
-    status?: string,
-    area?: number,
-  }) {
-    const take = 10;
-    const skip = (filters.page - 1) * take;
+  page: number,
+  from?: string,
+  to?: string,
+  status?: string,
+  area?: number,
+  all?: boolean,
+}) {
+  const take = filters.all ? undefined : 10;
+  const skip = filters.all ? undefined : (filters.page - 1) * 10;
 
-    const where: any = {};
+  const where: any = {};
 
-    // 👤 Usuario normal
+  if (!filters.all) {
     if (user.role === 'user') {
       where.user = { id: user.id };
       where.status = In(['pending', 'in_progress']);
-    }
-
-    // 👨‍🔧 Usuario técnico
-    if (user.role === 'technician') {
-      where.assignedTo = { id: user.id }; // Solo los asignados a sí mismo
+    } else if (user.role === 'technician') {
+      where.assignedTo = { id: user.id };
+      if (filters.status) {
+        where.status = filters.status;
+      }
+    } else if (user.role === 'admin') {
       if (filters.status) {
         where.status = filters.status;
       }
     }
-
-    // 👑 Usuario admin
-    if (user.role === 'admin') {
-      if (filters.status) {
-        where.status = filters.status;
-      }
+  } else {
+    if (filters.status) {
+      where.status = filters.status;
     }
-
-    if (filters.area) {
-      where.area = { id: filters.area };
-    }
-
-    if (filters.from && filters.to) {
-      where.createdAt = Between(new Date(filters.from), new Date(filters.to));
-    }
-
-    const [tickets, total] = await this.ticketRepo.findAndCount({
-      where,
-      relations: ['user', 'area', 'assignedTo'],
-      order: { createdAt: 'ASC' },
-      skip,
-      take,
-    });
-
-    return {
-      total,
-      page: filters.page,
-      perPage: take,
-      totalPages: Math.ceil(total / take),
-      data: tickets,
-    };
   }
+
+  if (filters.area) {
+    where.area = { id: filters.area };
+  }
+
+  if (filters.from && filters.to) {
+    where.createdAt = Between(new Date(filters.from), new Date(filters.to));
+  }
+
+  const [tickets, total] = await this.ticketRepo.findAndCount({
+    where,
+    relations: ['user', 'area', 'assignedTo'],
+    order: { createdAt: 'ASC' },
+    take,
+    skip,
+  });
+
+  return {
+    total,
+    page: filters.page,
+    perPage: take ?? total,
+    totalPages: take ? Math.ceil(total / take) : 1,
+    data: tickets,
+  };
+}
 
   async findOne(id: number) {
     return this.ticketRepo.findOne({ where: { id } });

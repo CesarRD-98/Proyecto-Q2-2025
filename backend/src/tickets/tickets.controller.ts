@@ -35,14 +35,18 @@ export class TicketsController {
     @Query('to') to: string,
     @Query('status') status: string,
     @Query('area') area: string,
+    @Query('all') all: string, 
   ) {
     const pageNumber = parseInt(page) || 1;
+    const allFlag = all === 'true';
+
     return this.ticketsService.findAll(req.user, {
       page: pageNumber,
       from,
       to,
       status,
       area: area ? parseInt(area) : undefined,
+      all: allFlag,
     });
   }
 
