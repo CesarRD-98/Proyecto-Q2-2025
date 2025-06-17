@@ -32,7 +32,7 @@ export default function UserIcon() {
     return (
         <div className={styles.container} ref={menuRef}>
             <div className={styles.iconContainer} onClick={() => setShowMenu(!showMenu)}>
-                <FontAwesomeIcon icon={faCircleUser} size="xl" />
+                <label style={{fontWeight: 'bold', cursor: 'pointer'}}>{user?.email}</label> <FontAwesomeIcon icon={faCircleUser} size="xl" />
             </div>
 
             {showMenu && (

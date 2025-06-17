@@ -15,7 +15,6 @@ export default function Navbar() {
   const [showModal, setShowModal] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [animationClass, setAnimationClass] = useState(styles.fadeIn);
-  const { user } = useLoginContext()
 
   useEffect(() => {
     if (showModal) {
@@ -51,8 +50,8 @@ export default function Navbar() {
             <FaPlus style={{ marginRight: '6px' }} />
             Nuevo Ticket
           </button>
-          <li><NotificacionBell /></li>
-          <li className={styles.userIcon}><label className={styles.userLogin}>{user?.email}</label> <UserIcon /></li>
+          {/* <li><NotificacionBell /></li> */}
+          <li className={styles.userIcon}> <UserIcon /></li>
         </div>
       </nav>
 

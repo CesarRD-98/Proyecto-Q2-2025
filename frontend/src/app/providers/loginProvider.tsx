@@ -6,8 +6,7 @@ import axios from 'axios'
 import { User } from '../models/userModel'
 import { useRouter } from 'next/navigation'
 import { LoginResponse } from '../models/responseLogin'
-
-const _url: string = 'http://localhost:3000'
+import { API_URL } from '../API/api.url'
 
 export default function LoginProvider({ children }: ChildrenModel) {
     const router = useRouter()
@@ -24,7 +23,7 @@ export default function LoginProvider({ children }: ChildrenModel) {
 
     const authUser = async (email: string, password: string): Promise<LoginResponse> => {
         try {
-            const response = await axios.post(`${_url}/auth/login`, { email, password })
+            const response = await axios.post(`${API_URL}/auth/login`, { email, password })
 
             if (response.status === 201) {
                 const { access_token, user } = response.data

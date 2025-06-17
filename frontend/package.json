@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack -p 3001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -19,6 +19,7 @@
     "@mui/material": "^7.1.0",
     "@tanstack/react-table": "^8.21.3",
     "axios": "^1.9.0",
+    "date-fns": "^4.1.0",
     "material-react-table": "^3.2.1",
     "next": "15.3.3",
     "react": "^19.0.0",
