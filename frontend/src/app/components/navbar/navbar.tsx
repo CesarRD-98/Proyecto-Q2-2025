@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHome, FaListAlt, FaChartBar, FaPlus } from 'react-icons/fa';
+import { FaHome, FaListAlt, FaChartBar, FaPlus, FaTools, FaUserPlus, FaUser } from 'react-icons/fa';
 import NotificacionBell from '../notificacionBell/notificacionBell';
 import UserIcon from '../userIcon/userIcon';
 import styles from '../../styles/components/navbar.module.scss';
@@ -18,9 +18,9 @@ export default function Navbar() {
   const [showModal, setShowModal] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-   const [isVisibleUser, setIsVisibleUser] = useState(false);
+  const [isVisibleUser, setIsVisibleUser] = useState(false);
   const [animationClass, setAnimationClass] = useState(styles.fadeIn);
-   const [animationClassUser, setAnimationClassUser] = useState(styles.fadeIn);
+  const [animationClassUser, setAnimationClassUser] = useState(styles.fadeIn);
 
   useEffect(() => {
     if (showModal) {
@@ -33,7 +33,7 @@ export default function Navbar() {
     }
   }, [showModal]);
 
-   useEffect(() => {
+  useEffect(() => {
     if (showUserModal) {
       setIsVisibleUser(true);
       setAnimationClassUser(styles.fadeIn);
@@ -56,10 +56,18 @@ export default function Navbar() {
             <FaListAlt size='20' />
             Tickets
           </Link>
-          <Link href="/reportes" className={`${styles.navItem} ${pathname === '/reportes' ? styles.active : ''}`}>
-            <FaChartBar size='20' />
-            Reportes
-          </Link>
+          {user?.role !== 'user' && (
+            <Link href="/reportes" className={`${styles.navItem} ${pathname === '/reportes' ? styles.active : ''}`}>
+              <FaChartBar size='20' />
+              Reportes
+            </Link>
+          )}
+          {/* {user?.role === 'admin' && (
+            <Link href={'/ajustes'} className={`${styles.navItem} ${pathname === '/ajustes' ? styles.active : ''}`}>
+              <FaTools size={20} />
+              Ajustes
+            </Link>
+          )} */}
         </div>
 
         <div className={styles.navRight}>
@@ -69,12 +77,12 @@ export default function Navbar() {
           </button>
 
           {user?.role === 'admin' && (
-    <button className='btn' onClick={() => setShowUserModal(true)} style={{ marginLeft: '8px' }}>
-      <FaPlus style={{ marginRight: '6px' }} />
-      Nuevo Usuario
-    </button>
-  )}
-          {/* <li><NotificacionBell /></li> */}
+            <button className='btn' onClick={() => setShowUserModal(true)} style={{ marginLeft: '8px', backgroundColor: '#0093D0' }}>
+              <FaUserPlus style={{ marginRight: '6px' }} />
+              Nuevo Usuario
+            </button>
+          )}
+          <li><NotificacionBell /></li>
           <li className={styles.userIcon}> <UserIcon /></li>
         </div>
       </nav>
@@ -94,21 +102,21 @@ export default function Navbar() {
         </div>
       )}
 
-       {/* Modal de crear usuario */}
+      {/* Modal de crear usuario */}
       {user?.role === 'admin' && showUserModal && (
-  <div className={styles.modalOverlay} onClick={() => setShowUserModal(false)}>
-    <div
-      className={`${styles.modal} ${animationClassUser}`}
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className={styles.showModal}>
-        <h2>Crear nuevo usuario</h2>
-        <button type='button' className='btn' onClick={() => setShowUserModal(false)}>X</button>
-      </div>
-      <CreateUser />
-    </div>
-  </div>
-)}
+        <div className={styles.modalOverlay} onClick={() => setShowUserModal(false)}>
+          <div
+            className={`${styles.modal} ${animationClassUser}`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className={styles.showModal}>
+              <h2>Crear nuevo usuario</h2>
+              <button type='button' className='btn' onClick={() => setShowUserModal(false)}>X</button>
+            </div>
+            <CreateUser />
+          </div>
+        </div>
+      )}
     </>
   );
 }

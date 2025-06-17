@@ -3,17 +3,21 @@ import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 import styles from "../../styles/components/notificacion.module.scss";
+import { setNotificationHandler } from "@/app/utils/notificationManager";
+import toast from "react-hot-toast";
 
 export default function NotificationBell() {
     const [showMenu, setShowMenu] = useState(false);
-    const [notifications, setNotifications] = useState([
-        'Nuevo ticket creado',
-        'Ticket 1001 actualizado',
-        'Ticket 1002 cerrado',
-        'Nueva respuesta en el ticket 1003',
-    ]);
+    const [notifications, setNotifications] = useState<string[]>([]);
 
     const menuRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setNotificationHandler((msg) => {
+            setNotifications((prev) => [msg, ...prev])
+            toast(msg)
+        })
+    }, [])
 
     // Manejar clics fuera del menú
     useEffect(() => {

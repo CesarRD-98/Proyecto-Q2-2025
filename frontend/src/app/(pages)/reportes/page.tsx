@@ -3,13 +3,15 @@ import ProtectedRoute from '@/app/components/protectedRoute/protectedRoute';
 import styles from '../../styles/pages/reportes.module.scss';
 import { useState } from 'react';
 import DateFilter from '@/app/components/dataFilter/dataFilter';
-import axios from 'axios';
+import axios, { all } from 'axios';
 import { AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import { MdAutorenew, MdFormatListBulleted } from "react-icons/md";
 import { API_URL } from '@/app/API/api.url';
+import { useGetTickets } from '@/app/providers/getTicketsProvider';
 
 export default function ReportesPage() {
   const [tickets, setTickets] = useState<Record<string, number>>({});
+  const { getTickets } = useGetTickets()
 
   const getIcon = (estado: string) => {
     switch (estado) {
@@ -26,32 +28,36 @@ export default function ReportesPage() {
     }
   };
 
-  const fetchTicketsByDateRange = async (start: string, end: string) => {
+  const fetchTicketsByDateRange = async (start: string, end: string, areaId?: string) => {
     try {
-      const token = localStorage.getItem('token')
-      const res = await axios.get(`${API_URL}/reports?from=${start}&to=${end}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.data;
-      console.log(data);
-
-      setTickets(data);
-      console.log(tickets);
-
+      const params: any = { all: true, from: start, to: end }
+      if (areaId) params.area = areaId
+      const { data } = await getTickets(params)
+      if (data) {
+        const statusCount: Record<string, number> = {}
+        data?.forEach(t => {
+          const status = t.status
+          statusCount[status] = (statusCount[status] || 0) + 1
+        })
+        setTickets(statusCount)
+      } else {
+        setTickets({})
+      }
     } catch (error) {
       console.error("Error al obtener tickets:", error);
     }
   };
+
+
   return (
     <ProtectedRoute>
       <div style={{ padding: "2rem" }}>
         <h2 style={{ textAlign: "center", marginBottom: "2rem" }}>Reportes</h2>
         <DateFilter onFilter={fetchTicketsByDateRange} />
-
         <div style={{ marginTop: "2rem", marginInline: "auto", textAlign: 'center' }}>
           <h3>Resultados:</h3>
-          {tickets.length === 0 ? (
-            <p>No hay tickets en el rango seleccionado.</p>
+          {Object.entries(tickets).length === 0 ? (
+            <p style={{ padding: 6 }}>No hay tickets en el rango seleccionado.</p>
           ) : (
             <div className={styles.container}>
               {Object.entries(tickets).map(([estado, cantidad]) => (

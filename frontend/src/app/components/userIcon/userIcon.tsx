@@ -32,14 +32,15 @@ export default function UserIcon() {
     return (
         <div className={styles.container} ref={menuRef}>
             <div className={styles.iconContainer} onClick={() => setShowMenu(!showMenu)}>
-                <label style={{fontWeight: 'bold', cursor: 'pointer'}}>{user?.email}</label> <FontAwesomeIcon icon={faCircleUser} size="xl" />
+                <label style={{fontSize: 14, fontWeight: 'bold', cursor: 'pointer', marginRight: 10 }}>{user?.email}</label> 
+                <FontAwesomeIcon icon={faCircleUser} size="xl" />
             </div>
 
             {showMenu && (
                 <div className={styles.menu}>
-                    <h4>Usuario {user?.role}</h4>
+                    <h4>Menú</h4>
                     <ul className={styles.ul}>
-                        <li>Solicitar cambio de contraseña</li>
+                        <li style={{cursor: 'text'}}><strong>Role:</strong> {user?.role}</li>
                         <li onClick={logout}><FontAwesomeIcon icon={faRightFromBracket} /> Cerrar sesión</li>
                     </ul>
                 </div>

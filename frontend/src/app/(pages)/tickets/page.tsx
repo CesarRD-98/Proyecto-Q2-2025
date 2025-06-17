@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { MaterialReactTable, MRT_PaginationState, type MRT_ColumnDef } from 'material-react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash, faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import ProtectedRoute from '@/app/components/protectedRoute/protectedRoute';
@@ -14,6 +14,7 @@ import { useTicketRefresh } from '@/app/providers/ticketRefreshProvider';
 import { API_URL } from '@/app/API/api.url';
 import { Ticket } from '@/app/models/ticketModel';
 import { format } from 'date-fns';
+import { notifyFrontend } from '@/app/utils/notificationManager';
 
 
 
@@ -28,13 +29,14 @@ export default function TicketsPage() {
     pageSize: 10
   })
 
+
   const fetchTickets = async (params: any = {}) => {
     const fullParams = {
       ...params,
       page: pagination.pageIndex + 1,
       perPage: pagination.pageSize
     };
-
+    
     const { data, total } = await getTickets(fullParams);
     setTickets(data || []);
     setRowCount(total || 0);
@@ -43,6 +45,8 @@ export default function TicketsPage() {
   useEffect(() => {
     fetchTickets();
   }, [pagination, refresh]);
+
+
 
   const handleEdit = async (ticket: Ticket) => {
     const { value: newStatus } = await Swal.fire({
@@ -60,7 +64,7 @@ export default function TicketsPage() {
       cancelButtonText: 'Cancelar'
     });
 
-    if (newStatus) {
+    if (newStatus && newStatus !== ticket.status) {
       const token = localStorage.getItem('token');
       if (!token) return;
 
@@ -71,12 +75,16 @@ export default function TicketsPage() {
           { headers: { Authorization: `Bearer ${token}` } }
         );
         fetchTickets();
+
+        const message = `Ticket "${ticket.title}" actualizado a ${newStatus.replace(/_/g, ' ')}`;
+        notifyFrontend(message);
         Swal.fire('¡Actualizado!', 'El status fue actualizado.', 'success');
       } catch (error) {
         Swal.fire('Error', 'No se pudo actualizar el status.', 'error');
       }
     }
   };
+
 
   const handleDelete = async (ticket: Ticket) => {
     const confirmResult = await Swal.fire({
@@ -149,6 +157,31 @@ export default function TicketsPage() {
     }
   };
 
+  const handleInfo = async (ticket: Ticket) => {
+    const formattedDate = format(new Date(ticket.createdAt), 'dd/MM/yyyy HH:mm');
+    const status = ticket.status.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase());
+
+    await Swal.fire({
+      title: `<strong>Detalles del Ticket #${ticket.id}</strong>`,
+      html: `
+      <div style="text-align: left; font-size: 15px; padding: 10px; line-height: 1.6;">
+        <p><span style="font-weight: bold;">📝 Título:</span> ${ticket.title}</p>
+        <p><span style="font-weight: bold;">📄 Descripción:</span> ${ticket.description}</p>
+        <p><span style="font-weight: bold;">📌 Estado:</span> 
+          <span style="padding: 3px 8px; background-color: #f0f0f0; border-radius: 5px; font-weight: 600;">${status}</span>
+        </p>
+        <p><span style="font-weight: bold;">🏢 Área:</span> ${ticket.area?.name || 'No asignada'}</p>
+        <p><span style="font-weight: bold;">👤 Usuario:</span> ${ticket.user?.name} (<a href="mailto:${ticket.user?.email}" style="text-decoration: none; color: #007bff;">${ticket.user?.email}</a>)</p>
+        <p><span style="font-weight: bold;">📅 Fecha de creación:</span> ${formattedDate}</p>
+      </div>
+    `,
+      icon: 'info',
+      confirmButtonText: 'Cerrar',
+      width: 600
+    });
+  };
+
+
   const columns: MRT_ColumnDef<Ticket>[] = [
     { accessorKey: 'id', header: 'ID' },
     { accessorKey: 'title', header: 'Título' },
@@ -183,24 +216,34 @@ export default function TicketsPage() {
           <div style={{ display: 'flex', gap: '10px' }}>
             <button
               style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 18 }}
-              onClick={() => handleEdit(ticket)}
-              title="Editar"
+              onClick={() => handleInfo(ticket)}
+              title="Ver detalles"
             >
-              <FontAwesomeIcon icon={faEdit} style={{ color: '#007bff' }} />
+              <FontAwesomeIcon icon={faCircleInfo} style={{ color: '#0093D0' }} />
             </button>
-            <button
-              style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 16 }}
-              onClick={() => handleDelete(ticket)}
-              title="Eliminar"
-            >
-              <FontAwesomeIcon icon={faTrash} style={{ color: '#dc3545' }} />
-            </button>
+            {user?.role !== 'user' && (
+              <>
+                <button
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 18 }}
+                  onClick={() => handleEdit(ticket)}
+                  title="Editar"
+                >
+                  <FontAwesomeIcon icon={faEdit} style={{ color: '#189F27' }} />
+                </button>
+                <button
+                  style={{ background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 16 }}
+                  onClick={() => handleDelete(ticket)}
+                  title="Eliminar"
+                >
+                  <FontAwesomeIcon icon={faTrash} style={{ color: '#D32F2F' }} />
+                </button>
+              </>
+            )}
           </div>
         );
       }
     }
   ];
-  // ... todo el contenido anterior se mantiene igual
 
   return (
     <ProtectedRoute>

@@ -1,12 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { FaPaperclip } from "react-icons/fa";
 import styles from "../../styles/components/createTicket.module.scss";
 import { useGetTickets } from "@/app/providers/getTicketsProvider";
 import { useTicketRefresh } from "@/app/providers/ticketRefreshProvider";
 import { API_URL } from "@/app/API/api.url";
-import { AreasType } from "@/app/models/areasModel";
+import { notifyFrontend } from "@/app/utils/notificationManager";
 
 type TicketForm = {
   title: string;
@@ -15,26 +14,18 @@ type TicketForm = {
 };
 
 export default function CreateTicket() {
-  const { getTickets } = useGetTickets()
+  const { getTickets, areas } = useGetTickets()
   const { triggerRefresh } = useTicketRefresh()
   const [color, setColor] = useState("red")
   const [bgColor, setBgColor] = useState("#FDEDDC")
-  const [area, setArea] = useState<AreasType[]>([])
 
-  useEffect(() => {
-    const load = async () => {
-      const {areas} = await getTickets({params: {}})
-      setArea(areas || [])
-    }
-    load()
-  }, [])
 
   const [form, setForm] = useState<TicketForm>({
     title: "",
     description: "",
     area: 1,
   });
-  
+
   const [mensaje, setMensaje] = useState<string>(""); // Mensaje de confirmación o error
 
   const handleChange = (
@@ -74,7 +65,8 @@ export default function CreateTicket() {
     try {
       await axios.post(`${API_URL}/tickets`, {
         title: form.title,
-        description: form.description
+        description: form.description,
+        area: form.area
       }, {
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -83,6 +75,8 @@ export default function CreateTicket() {
       setColor("green")
       setBgColor("#E3F6E6")
       setMensaje("Ticket creado correctamente.");
+      const msg = 'Nuevo ticket creado exitosamente'
+      notifyFrontend(msg)
       setForm({
         title: "",
         description: "",
@@ -137,7 +131,7 @@ export default function CreateTicket() {
           onChange={handleChange}
           className="form-control"
         >
-          {area.map((a) => (
+          {areas.map((a) => (
             <option key={a.id} value={a.id}>{a.name}</option>
           ))}
         </select>

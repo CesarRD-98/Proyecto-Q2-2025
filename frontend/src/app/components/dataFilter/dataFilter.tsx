@@ -1,22 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from '../../styles/components/dataFilter.module.scss'
+import { useGetTickets } from "@/app/providers/getTicketsProvider";
 
 interface DateFilterProps {
-  onFilter: (startDate: string, endDate: string) => void;
+  onFilter: (startDate: string, endDate: string, areaId?: string) => void;
 }
 
 export default function DateFilter({ onFilter }: DateFilterProps) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  // const [status, setStatus] = useState("")
+  const [areaSelected, setAreaSelected] = useState("")
+  const { areas } = useGetTickets()
 
   const handleFilter = () => {
     if (!startDate || !endDate) {
       alert("Selecciona ambas fechas");
       return;
     }
-
-    onFilter(startDate, endDate);
+    const areaId = areaSelected !== "" ? areaSelected : undefined
+    onFilter(startDate, endDate, areaId);
   };
 
   return (
@@ -41,15 +43,15 @@ export default function DateFilter({ onFilter }: DateFilterProps) {
             onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
-        {/* <div className={styles.inputGroup}>
-          <label className="form-label">status: </label>
-          <select name="status" id="status" className="form-control" onChange={(e) => setStatus(e.target.value)}>
-            <option value="pending">pending</option>
-            <option value="in_progress">in_progress</option>
-            <option value="finalized">finalized</option>
-            <option value="cancelled">cancelled</option>
+        <div className={styles.inputGroup}>
+          <label className="form-label">Área: </label>
+          <select name="status" id="status" className="form-control" onChange={(e) => setAreaSelected(e.target.value)}>
+            <option value="">-- Todas las áreas --</option>
+            {areas.map(a => (
+              <option key={a.id} value={a.id}>{a.name}</option>
+            ))}
           </select>
-        </div> */}
+        </div>
         <div className="">
           <button onClick={handleFilter} className='btn btn-primary w-100'>
             Consultar
