@@ -8,13 +8,19 @@ import NotificacionBell from '../notificacionBell/notificacionBell';
 import UserIcon from '../userIcon/userIcon';
 import styles from '../../styles/components/navbar.module.scss';
 import CreateTicket from '../createTicket/createTicket';
+import CreateUser from '../createUser/createUser';
 import { useLoginContext } from '@/app/providers/loginProvider';
 
 export default function Navbar() {
   const pathname = usePathname();
+
+  const { user } = useLoginContext();
   const [showModal, setShowModal] = useState(false);
+  const [showUserModal, setShowUserModal] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+   const [isVisibleUser, setIsVisibleUser] = useState(false);
   const [animationClass, setAnimationClass] = useState(styles.fadeIn);
+   const [animationClassUser, setAnimationClassUser] = useState(styles.fadeIn);
 
   useEffect(() => {
     if (showModal) {
@@ -26,6 +32,17 @@ export default function Navbar() {
       return () => clearTimeout(timeout);
     }
   }, [showModal]);
+
+   useEffect(() => {
+    if (showUserModal) {
+      setIsVisibleUser(true);
+      setAnimationClassUser(styles.fadeIn);
+    } else {
+      setAnimationClassUser(styles.fadeOut);
+      const timeout = setTimeout(() => setIsVisibleUser(false), 300);
+      return () => clearTimeout(timeout);
+    }
+  }, [showUserModal]);
 
   return (
     <>
@@ -50,6 +67,13 @@ export default function Navbar() {
             <FaPlus style={{ marginRight: '6px' }} />
             Nuevo Ticket
           </button>
+
+          {user?.role === 'admin' && (
+    <button className='btn' onClick={() => setShowUserModal(true)} style={{ marginLeft: '8px' }}>
+      <FaPlus style={{ marginRight: '6px' }} />
+      Nuevo Usuario
+    </button>
+  )}
           {/* <li><NotificacionBell /></li> */}
           <li className={styles.userIcon}> <UserIcon /></li>
         </div>
@@ -69,6 +93,22 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
+       {/* Modal de crear usuario */}
+      {user?.role === 'admin' && showUserModal && (
+  <div className={styles.modalOverlay} onClick={() => setShowUserModal(false)}>
+    <div
+      className={`${styles.modal} ${animationClassUser}`}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className={styles.showModal}>
+        <h2>Crear nuevo usuario</h2>
+        <button type='button' className='btn' onClick={() => setShowUserModal(false)}>X</button>
+      </div>
+      <CreateUser />
+    </div>
+  </div>
+)}
     </>
   );
 }

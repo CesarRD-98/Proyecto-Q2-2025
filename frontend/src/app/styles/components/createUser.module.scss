@@ -1,0 +1,52 @@
+@use '../variables.scss' as *;
+
+.formUser {
+  input,
+  select,
+  textarea {
+    padding: 8px;
+    width: 100%;
+    border: 1px solid $color-border;
+    border-radius: $radius-default;
+    font-size: $text-size-default;
+    margin-bottom: 12px;
+  }
+
+  label {
+    font-weight: bold;
+    margin-bottom: 4px;
+    display: block;
+    color: $color-text-base;
+  }
+
+  .btn {
+    margin-top: 12px;
+  }
+}
+
+.fileLabel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  color: $color-text-secondary;
+  padding: 8px 12px;
+  border-radius: $radius-default;
+  border: 2px solid $color-border;
+  font-size: $text-size-default;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: $info-bg-soft;
+    border: 2px solid $color-primary;
+  }
+
+  &:active {
+    border: 2px solid $color-dark-base;
+  }
+
+  input {
+    display: none;
+  }
+}
