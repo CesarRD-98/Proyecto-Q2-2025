@@ -41,9 +41,10 @@ async function bootstrap() {
 
   if (existingAreas === 0) {
     await areaRepo.insert([
-      { name: 'Sistemas' },
-      { name: 'Soporte Técnico' },
-      { name: 'Infraestructura' },
+      { name: 'Mantenimiento' },
+      { name: 'IT' },
+      { name: 'Recursos Humanos' },
+      { name: 'Administración' },
     ]);
     console.log('✅ Áreas insertadas correctamente');
   } else {

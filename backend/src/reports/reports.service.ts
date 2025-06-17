@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Between } from 'typeorm';
 import { Ticket } from '../tickets/ticket.entity';
+import { Between, Equal, Repository } from 'typeorm';
 
 @Injectable()
 export class ReportsService {
@@ -10,13 +10,29 @@ export class ReportsService {
     private ticketRepo: Repository<Ticket>,
   ) {}
 
-  async report(from: string, to: string) {
-    const startDate = new Date(from);
-    const endDate = new Date(to);
-    const total = await this.ticketRepo.count({ where: { createdAt: Between(startDate, endDate) } });
-    const finalized = await this.ticketRepo.count({
-      where: { createdAt: Between(startDate, endDate), status: 'finalized' },
-    });
-    return { total, finalized };
+  async generateReport(from: string, to: string, areaId?: number) {
+    const where: any = {
+      createdAt: Between(new Date(from), new Date(to)),
+    };
+
+    if (areaId) {
+      where.area = { id: areaId };
+    }
+
+    const [total, pending, inProgress, finalized, cancelled] = await Promise.all([
+      this.ticketRepo.count({ where }),
+      this.ticketRepo.count({ where: { ...where, status: 'pending' } }),
+      this.ticketRepo.count({ where: { ...where, status: 'in_progress' } }),
+      this.ticketRepo.count({ where: { ...where, status: 'finalized' } }),
+      this.ticketRepo.count({ where: { ...where, status: 'cancelled' } }),
+    ]);
+
+    return {
+      total,
+      pending,
+      inProgress,
+      finalized,
+      cancelled,
+    };
   }
 }
