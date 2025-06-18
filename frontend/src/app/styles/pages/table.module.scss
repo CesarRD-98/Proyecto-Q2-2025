@@ -1,0 +1,31 @@
+// estados de tabla de tickets
+@use '../variables.scss' as *;
+
+.statusBadge {
+  // estilos generales del badge
+  width: 100px;
+  text-align: center;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #ffffff;
+
+  &.pending {
+    color: #FAD02C;
+  }
+
+  &.in_progress {
+    color: #A1C6EA;
+  }
+
+  &.finalized {
+    color: #A8D5BA;
+  }
+
+  &.cancelled {
+    color: #F38181;
+  }
+}
+
+

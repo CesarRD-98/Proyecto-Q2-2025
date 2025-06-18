@@ -1,0 +1,63 @@
+// Colores principales
+$color-primary: #00ADF2;
+$color-primary-hover: #0093D0;
+$color-primary-active: #007CB1;
+
+$color-success: #189F27;
+$color-success-hover: #138B20;
+
+$color-accent: #EB6C0B;
+$color-accent-hover: #D75F0A;
+
+$color-dark-base: #003B67;
+$color-dark-base-hover: #002C4D;
+
+// Colores de error
+$color-error: #D32F2F;
+$color-error-hover: #B71C1C;
+$color-error-bg-soft: #FDEAEA;
+
+// Grises y neutrales
+$color-background: #F5F5F5;
+$color-surface: #FFFFFF;
+$color-surface-alt: #FAFAFA;
+$color-border: #E0E0E0;
+$color-border-soft: #EEEEEE;
+$color-icon: $color-surface;
+
+$color-text-primary: #1A1A1A;
+$color-text-secondary: #666666;
+$color-text-disabled: #AAAAAA;
+
+// Inputs y UI interacciones
+$input-bg: #FAFAFA;
+$input-border: #E0E0E0;
+$input-padding: 10px;
+$input-focus-border: $color-primary;
+$input-placeholder: $color-text-disabled;
+
+// Botones
+$btn-bg: $color-primary;
+$btn-hover-bg: $color-primary-hover;
+$btn-text: #FFFFFF;
+$btn-disabled-bg: $color-border-soft;
+$btn-disabled-text: $color-text-disabled;
+
+// Estados
+$tag-new-bg: $color-primary;
+$tag-processing-bg: $color-accent;
+$tag-resolved-bg: $color-success;
+$tag-urgent-bg: $color-accent;
+
+// Notificaciones suaves
+$info-bg-soft: #E6F7FD;
+$success-bg-soft: #E3F6E6;
+$accent-bg-soft: #FDEDDC;
+
+// Misceláneo
+$radius-default: 6px;
+$radius-large: 24px;
+$text-size-default: 14px;
+$shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.06);
+$transition-default: all 0.2s ease-in-out;
+

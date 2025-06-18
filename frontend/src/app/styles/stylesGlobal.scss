@@ -1,0 +1,86 @@
+@use './variables.scss' as *;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: $color-background;
+  color: $color-text-primary;
+}
+
+.btn {
+  font-size: $text-size-default;
+  background-color: #dfdfdf;
+  border: none;
+  padding: $input-padding;
+  border-radius: $radius-default;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #d4d4d4;
+  }
+
+  &:active {
+    background-color: #ccc;
+  }
+}
+
+.btn-primary {
+  background: $color-primary;
+  color: #fff;
+
+  &:hover {
+    background: $color-primary-hover;
+  }
+
+  &:active {
+    background: $color-primary-active;
+  }
+}
+
+.btn-secondary {
+  background-color: $color-primary;
+  color: #fff;
+
+  &:hover {
+    background: $color-primary-hover;
+  }
+
+  &:active {
+    background: $color-primary-active;
+  }
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.form-control {
+  width: 100%;
+  padding: $input-padding;
+  margin-bottom: 1rem;
+  border-radius: $radius-default;
+  border: 0.1rem solid $input-border;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    border-color: $color-dark-base-hover;
+  }
+
+  &:focus {
+    border-color: $input-focus-border;
+  }
+}
+
+.form-label {
+  display: block;
+  margin: 0.2rem 0;
+  color: $color-text-primary;
+  font-size: $text-size-default;
+}

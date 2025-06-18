@@ -1,0 +1,54 @@
+@use "../variables.scss" as *;
+
+.container {
+  max-width: 850px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: $color-surface;
+  border-radius: $radius-default;
+  transition: $transition-default;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: $color-text-primary;
+}
+
+.inputs {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+
+  button {
+    padding: 12px;
+  }
+}
+
+.inputGroup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  input {
+    margin: 0;
+  }
+
+  select {
+    margin: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .inputs {
+    flex-direction: column;
+    padding: 2rem;
+  }
+
+  .inputGroup {
+    flex-direction: column;
+  }
+}
