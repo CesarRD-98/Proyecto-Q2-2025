@@ -148,7 +148,25 @@
   }
 }
 
-@media (max-width: 880px) {
+@media (max-width: 1080px) {
+  .navLeft,
+  .navRight {
+    gap: 0.5rem;
+
+    .navItem {
+      gap: 0.5rem;
+      font-size: 12px;
+    }
+  }
+
+  .modal {
+    padding: 2rem;
+    max-width: 400px;
+  }
+}
+
+
+@media (max-width: 980px) {
   .navbar {
     flex-direction: column;
   }
@@ -160,12 +178,19 @@
 
     .navItem {
       gap: 0.5rem;
-      // font-size: 12px;
+      font-size: 12px;
     }
   }
 
   .modal {
     padding: 2rem;
     max-width: 400px;
+  }
+}
+
+
+@media (max-width: 720px) {
+  .navRight {
+    flex-direction: column;
   }
 }

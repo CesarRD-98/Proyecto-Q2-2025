@@ -139,7 +139,7 @@ export default function CreateUser() {
         >
           <option value="user">Usuario</option>
           <option value="admin">Administrador</option>
-          <option value="technician">Técnico</option>
+          {/* <option value="technician">Técnico</option> */}
         </select>
       </div>
 

@@ -69,3 +69,17 @@
         }
     }
 }
+
+@media(max-width: 980px) {
+    .menu {
+        top: 140px;
+        right: 140px;
+    }
+}
+
+@media(max-width: 720px) {
+    .menu {
+        top: 260px;
+        right: 200px;
+    }
+}

@@ -112,7 +112,7 @@ export default function GraficoTickets() {
         </>
       ) : (
         <p className={styles.message}>
-          Este resumen solo está disponible para personal técnico o administradores.
+          Este resumen solo está disponible para administradores.
         </p>
       )}
 
