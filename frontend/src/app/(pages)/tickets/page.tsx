@@ -16,19 +16,17 @@ import { Ticket } from '@/app/models/ticketModel';
 import { format } from 'date-fns';
 import { notifyFrontend } from '@/app/utils/notificationManager';
 
-
-
 export default function TicketsPage() {
-  const { getTickets } = useGetTickets()
-  const { refresh } = useTicketRefresh()
+  const { getTickets } = useGetTickets();
+  const { refresh } = useTicketRefresh();
   const [tickets, setTickets] = useState<Ticket[]>([]);
-  const [rowCount, setRowCount] = useState(0)
+  const [rowCount, setRowCount] = useState(0);
   const { user } = useContext(LoginContext);
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
     pageSize: 10
-  })
-
+  });
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchTickets = async (params: any = {}) => {
     const fullParams = {
@@ -36,17 +34,15 @@ export default function TicketsPage() {
       page: pagination.pageIndex + 1,
       perPage: pagination.pageSize
     };
-    
+
     const { data, total } = await getTickets(fullParams);
     setTickets(data || []);
     setRowCount(total || 0);
-  }
+  };
 
   useEffect(() => {
     fetchTickets();
   }, [pagination, refresh]);
-
-
 
   const handleEdit = async (ticket: Ticket) => {
     const { value: newStatus } = await Swal.fire({
@@ -84,7 +80,6 @@ export default function TicketsPage() {
       }
     }
   };
-
 
   const handleDelete = async (ticket: Ticket) => {
     const confirmResult = await Swal.fire({
@@ -181,7 +176,6 @@ export default function TicketsPage() {
     });
   };
 
-
   const columns: MRT_ColumnDef<Ticket>[] = [
     { accessorKey: 'id', header: 'ID' },
     { accessorKey: 'title', header: 'Título' },
@@ -191,10 +185,30 @@ export default function TicketsPage() {
       header: 'Estado',
       Cell: ({ cell }) => {
         const status = cell.getValue<string>();
+        const formattedStatus = status.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase());
+
+        const statusColors: Record<string, string> = {
+          pending: '#FF9800',
+          in_progress: '#2196F3',
+          finalized: '#4CAF50',
+          cancelled: '#F44336'
+        };
 
         return (
-          <span className={`${styles.statusBadge} ${styles[status]}`}>
-            {status.replace(/_/g, ' ').replace(/^\w/, c => c.toUpperCase())}
+          <span
+            style={{
+              backgroundColor: '#f1f1f1',
+              color: statusColors[status] || '#333',
+              padding: '4px 10px',
+              borderRadius: '12px',
+              fontWeight: 600,
+              fontSize: '14px',
+              display: 'inline-block',
+              minWidth: '100px',
+              textAlign: 'center'
+            }}
+          >
+            {formattedStatus}
           </span>
         );
       }
@@ -248,8 +262,9 @@ export default function TicketsPage() {
   return (
     <ProtectedRoute>
       <h2 style={{ textAlign: 'center', margin: '22px' }}>Página de Tickets</h2>
-      {user?.role === 'admin' || user?.role === 'technician' ? (
-        <div style={{ marginLeft: 32 }}>
+
+{user?.role === 'admin' || user?.role === 'technician' || user?.role === 'user' ? (
+        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginLeft: 32 }}>
           <button
             onClick={handleFilter}
             style={{
@@ -274,12 +289,35 @@ export default function TicketsPage() {
             />
             Filtrar Tickets
           </button>
+
+          <input
+            type="text"
+            placeholder="Buscar ticket..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              padding: '10px 14px',
+              borderRadius: '6px',
+              border: '1.5px solid #00bcd4',
+              background: 'linear-gradient(white, white) padding-box, linear-gradient(90deg, #007bff, #00bcd4) border-box',
+              outline: 'none',
+              fontSize: '16px',
+              width: '300px',
+              color: '#333',
+              boxShadow: '0 1px 4px rgba(0, 0, 0, 0.08)'
+            }}
+          />
         </div>
       ) : null}
+
       <div style={{ padding: '2rem' }}>
         <MaterialReactTable
           columns={columns}
-          data={tickets}
+          data={tickets.filter(ticket =>
+            Object.values(ticket).some(val =>
+              String(val).toLowerCase().includes(searchTerm.toLowerCase())
+            )
+          )}
           manualPagination
           rowCount={rowCount}
           state={{ pagination }}
@@ -287,10 +325,9 @@ export default function TicketsPage() {
           enableGlobalFilter={false}
           enableColumnFilters={false}
         />
-
       </div>
-      <div style={{ marginTop: '2rem' }}></div>
 
+      <div style={{ marginTop: '2rem' }}></div>
     </ProtectedRoute>
   );
 }
