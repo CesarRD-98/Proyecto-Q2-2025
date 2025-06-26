@@ -8,7 +8,6 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import ProtectedRoute from '@/app/components/protectedRoute/protectedRoute';
 import { LoginContext } from '@/app/contexts/loginContext';
-import styles from '../../styles/pages/table.module.scss';
 import { useGetTickets } from '@/app/providers/getTicketsProvider';
 import { useTicketRefresh } from '@/app/providers/ticketRefreshProvider';
 import { API_URL } from '@/app/API/api.url';
@@ -57,7 +56,18 @@ export default function TicketsPage() {
       inputValue: ticket.status,
       showCancelButton: true,
       confirmButtonText: 'Guardar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        popup: 'modal fadeIn',
+        confirmButton: 'btn btn-primary',
+        cancelButton: 'btn btn-cancel',
+      },
+      showClass: {
+        popup: 'fadeIn'
+      },
+      hideClass: {
+        popup: 'fadeOut'
+      },
     });
 
     if (newStatus && newStatus !== ticket.status) {
@@ -88,7 +98,18 @@ export default function TicketsPage() {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      cancelButtonText: 'Cancelar',
+      customClass: {
+        popup: 'modal fadeIn',
+        confirmButton: 'btn btn-primary',
+        cancelButton: 'btn btn-cancel',
+      },
+      showClass: {
+        popup: 'fadeIn'
+      },
+      hideClass: {
+        popup: 'fadeOut'
+      },
     });
 
     if (confirmResult.isConfirmed) {
@@ -132,6 +153,17 @@ export default function TicketsPage() {
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: 'Aplicar Filtro',
+      customClass: {
+        popup: 'modal fadeIn',
+        confirmButton: 'btn btn-primary',
+        cancelButton: 'btn btn-cancel',
+      },
+      showClass: {
+        popup: 'fadeIn'
+      },
+      hideClass: {
+        popup: 'fadeOut'
+      },
       preConfirm: () => {
         return {
           description: (document.getElementById('swal-desc') as HTMLInputElement).value,
@@ -172,7 +204,17 @@ export default function TicketsPage() {
     `,
       icon: 'info',
       confirmButtonText: 'Cerrar',
-      width: 600
+      width: 600,
+      customClass: {
+        popup: 'modal fadeIn',
+        confirmButton: 'btn btn-primary',
+      },
+      showClass: {
+        popup: 'fadeIn'
+      },
+      hideClass: {
+        popup: 'fadeOut'
+      },
     });
   };
 
@@ -200,7 +242,7 @@ export default function TicketsPage() {
               backgroundColor: '#f1f1f1',
               color: statusColors[status] || '#333',
               padding: '4px 10px',
-              borderRadius: '12px',
+              borderRadius: '6px',
               fontWeight: 600,
               fontSize: '14px',
               display: 'inline-block',
@@ -263,7 +305,7 @@ export default function TicketsPage() {
     <ProtectedRoute>
       <h2 style={{ textAlign: 'center', margin: '22px' }}>Página de Tickets</h2>
 
-{user?.role === 'admin' || user?.role === 'technician' || user?.role === 'user' ? (
+      {user?.role === 'admin' || user?.role === 'technician' || user?.role === 'user' ? (
         <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginLeft: 32 }}>
           <button
             onClick={handleFilter}
@@ -298,7 +340,7 @@ export default function TicketsPage() {
             style={{
               padding: '10px 14px',
               borderRadius: '6px',
-              border: '1.5px solid #00bcd4',
+              border: '2px solid #00bcd4',
               background: 'linear-gradient(white, white) padding-box, linear-gradient(90deg, #007bff, #00bcd4) border-box',
               outline: 'none',
               fontSize: '16px',
@@ -313,11 +355,15 @@ export default function TicketsPage() {
       <div style={{ padding: '2rem' }}>
         <MaterialReactTable
           columns={columns}
-          data={tickets.filter(ticket =>
-            Object.values(ticket).some(val =>
-              String(val).toLowerCase().includes(searchTerm.toLowerCase())
-            )
-          )}
+          data={tickets.filter(ticket => {
+            const hayCoincidencia =
+              ticket.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              ticket.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              ticket.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              ticket.area?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+
+            return hayCoincidencia;
+          })}
           manualPagination
           rowCount={rowCount}
           state={{ pagination }}

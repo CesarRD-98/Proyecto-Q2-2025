@@ -1,4 +1,4 @@
-@use './variables.scss' as *;
+@use "./variables.scss" as *;
 
 * {
   box-sizing: border-box;
@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background-color: $color-background;
   color: $color-text-primary;
 }
@@ -56,6 +56,19 @@ body {
   }
 }
 
+.btn-cancel {
+  background-color: $color-error;
+  color: #fff;
+
+  &:hover {
+    background-color: $color-error-hover;
+  }
+
+  &:active {
+    background-color: $color-error;
+  }
+}
+
 .w-100 {
   width: 100%;
 }
@@ -83,4 +96,41 @@ body {
   margin: 0.2rem 0;
   color: $color-text-primary;
   font-size: $text-size-default;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.modal {
+  animation-duration: 0.3s;
+  animation-fill-mode: both;
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+}
+
+.fadeOut {
+  animation-name: fadeOut;
 }

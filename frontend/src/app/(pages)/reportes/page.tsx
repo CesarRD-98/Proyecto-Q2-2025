@@ -3,10 +3,8 @@ import ProtectedRoute from '@/app/components/protectedRoute/protectedRoute';
 import styles from '../../styles/pages/reportes.module.scss';
 import { useState } from 'react';
 import DateFilter from '@/app/components/dataFilter/dataFilter';
-import axios, { all } from 'axios';
 import { AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
 import { MdAutorenew, MdFormatListBulleted } from "react-icons/md";
-import { API_URL } from '@/app/API/api.url';
 import { useGetTickets } from '@/app/providers/getTicketsProvider';
 
 export default function ReportesPage() {
@@ -16,13 +14,13 @@ export default function ReportesPage() {
   const getIcon = (estado: string) => {
     switch (estado) {
       case "pending":
-        return <AiOutlineClockCircle size={32} color="#00ADF2" />;
+        return <AiOutlineClockCircle size={32} color="#FAD02C" />;
       case "in_progress":
-        return <MdAutorenew size={32} color="#EB6C0B" />;
+        return <MdAutorenew size={32} color="#A1C6EA" />;
       case "finalized":
-        return <AiOutlineCheckCircle size={32} color="#189F27" />;
+        return <AiOutlineCheckCircle size={32} color="#A8D5BA" />;
       case "cancelled":
-        return <AiOutlineCloseCircle size={32} color="#D32F2F" />;
+        return <AiOutlineCloseCircle size={32} color="#F38181" />;
       default:
         return <MdFormatListBulleted size={32} color="#666666" />;
     }

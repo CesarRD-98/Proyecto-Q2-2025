@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHome, FaListAlt, FaChartBar, FaPlus, FaTools, FaUserPlus, FaUser } from 'react-icons/fa';
+import { FaHome, FaListAlt, FaChartBar, FaPlus, FaUserPlus } from 'react-icons/fa';
 import NotificacionBell from '../notificacionBell/notificacionBell';
 import UserIcon from '../userIcon/userIcon';
 import styles from '../../styles/components/navbar.module.scss';
@@ -62,12 +62,6 @@ export default function Navbar() {
               Reportes
             </Link>
           )}
-          {/* {user?.role === 'admin' && (
-            <Link href={'/ajustes'} className={`${styles.navItem} ${pathname === '/ajustes' ? styles.active : ''}`}>
-              <FaTools size={20} />
-              Ajustes
-            </Link>
-          )} */}
         </div>
 
         <div className={styles.navRight}>
